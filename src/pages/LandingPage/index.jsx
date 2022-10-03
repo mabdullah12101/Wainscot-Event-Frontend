@@ -1,10 +1,14 @@
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Hero from "../../components/Hero";
-import HeaderSection from "../../components/Section/HeaderSection";
-import EventSection from "../../components/Section/EventSection";
-import CardEvent from "../../components/Section/CardEvent";
-import ButtonSeeAll from "../../components/Section/ButtonSeeAll";
+import HeaderSection from "../../components/LandingPage/HeaderSection";
+import ScheduleEvent from "../../components/LandingPage/ScheduleEvent";
+import CardEvent from "../../components/LandingPage/CardEvent";
+import ButtonSeeAll from "../../components/LandingPage/ButtonSeeAll";
+import DiscoverSection from "../../components/LandingPage/DiscoverSection";
+import ListCategory from "../../components/LandingPage/ListCategory";
+import ListEventCategory from "../../components/LandingPage/ListEventCategory";
+import ListPartner from "../../components/LandingPage/ListPartner";
 
 function LandingPage() {
   return (
@@ -15,13 +19,14 @@ function LandingPage() {
       </section>
       <section className="flex flex-col items-center xl:my-52 my-20">
         <HeaderSection
+          bgColor={"bg-main-pink"}
           colorSection={"main-pink"}
           bgOpacity={"bg-opacity-25"}
           sectionTitle={"Event"}
           sectionCaption={"Event For You"}
           borderColor={"border-main-pink"}
         />
-        <EventSection />
+        <ScheduleEvent />
 
         <div className="flex gap-x-8 xl:self-auto self-start pl-8 xl:pl-0">
           <CardEvent
@@ -46,9 +51,36 @@ function LandingPage() {
           />
         </div>
 
-        <ButtonSeeAll borderColor={"main-blue"} />
+        <ButtonSeeAll borderColor={"border-main-blue"} />
       </section>
 
+      <DiscoverSection />
+
+      <section className="flex flex-col items-center xl:my-52 my-20">
+        <HeaderSection
+          bgColor={"bg-main-pink"}
+          colorSection={"main-pink"}
+          bgOpacity={"bg-opacity-25"}
+          sectionTitle={"CATEGORY"}
+          sectionCaption={"Browse Events By Category"}
+          borderColor={"border-main-pink"}
+        />
+
+        <ListCategory />
+        <ListEventCategory />
+      </section>
+
+      <section className="bg-main-black bg-[url('./assets/img/bg-partner.png')] text-white flex flex-col items-center py-24 bg-center bg-cover bg-no-repeat">
+        <HeaderSection
+          bgColor={"bg-[#ffffff40]"}
+          sectionTitle={"PARTNER"}
+          sectionCaption={"Our Trusted Partners"}
+          borderColor={"border-white"}
+        />
+        <span className="text-xs text-main-gray">By companies like :</span>
+
+        <ListPartner />
+      </section>
       <Footer />
     </>
   );

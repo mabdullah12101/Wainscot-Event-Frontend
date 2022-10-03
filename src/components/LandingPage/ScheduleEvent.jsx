@@ -1,4 +1,4 @@
-function EventSection() {
+function ScheduleEvent() {
   return (
     <>
       <div className="flex items-center mb-10">
@@ -43,4 +43,4 @@ function EventSection() {
   );
 }
 
-export default EventSection;
+export default ScheduleEvent;
