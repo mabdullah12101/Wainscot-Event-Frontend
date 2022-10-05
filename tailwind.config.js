@@ -13,6 +13,7 @@ module.exports = {
         "main-pink": "#FF3D71",
         "main-gray": "#C1C5D0",
         "main-black": "#373A42",
+        "young-blue": "#F4F7FF",
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],

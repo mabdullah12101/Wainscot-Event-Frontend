@@ -1,13 +1,27 @@
 // eslint-disable-next-line react/prop-types
-function CardEvent({ bgCardEvent, dateCardEvent, titleCardEvent }) {
+function CardEvent({
+  bgCardEvent,
+  dateCardEvent,
+  titleCardEvent,
+  key,
+  handleNavigateDetailEvent,
+  idEvent,
+}) {
   return (
-    <div
-      className={`${bgCardEvent} bg-cover bg-center w-72 h-96 rounded-[40px] flex flex-col justify-end text-white px-7 pb-7`}
+    <button
+      className={`w-72 h-96 rounded-[40px] flex flex-col justify-end text-white px-7 pb-7 relative overflow-hidden`}
+      key={key}
+      onClick={() => handleNavigateDetailEvent(idEvent)}
     >
+      <img
+        src={`https://res.cloudinary.com/dra4ha50q/image/upload/v1664919867/${bgCardEvent}`}
+        className="w-full h-full absolute right-0 -z-10 -mb-7 object-fill"
+        alt=""
+      />
       <span className="font-medium text-sm tracking-wider mb-3">
         {dateCardEvent}
       </span>
-      <h3 className="font-bold text-2xl tracking-widest mb-5">
+      <h3 className="font-bold text-2xl tracking-widest mb-5 text-left">
         {titleCardEvent}
       </h3>
       <div className="flex">
@@ -18,7 +32,7 @@ function CardEvent({ bgCardEvent, dateCardEvent, titleCardEvent }) {
           62+
         </div>
       </div>
-    </div>
+    </button>
   );
 }
 

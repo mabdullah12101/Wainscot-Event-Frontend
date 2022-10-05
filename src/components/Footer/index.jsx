@@ -2,7 +2,7 @@ import logo from "../../assets/img/logo.png";
 
 function Footer() {
   return (
-    <footer className="xl:mx-56 xl:my-56 mx-8 my-20">
+    <footer className="xl:px-56 xl:py-56 px-8 py-20">
       <div className="flex xl:flex-row flex-col xl:gap-0 gap-y-16 justify-between">
         <div>
           <div className="flex items-center">

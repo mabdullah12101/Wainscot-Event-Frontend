@@ -9,13 +9,90 @@ import DiscoverSection from "../../components/LandingPage/DiscoverSection";
 import ListCategory from "../../components/LandingPage/ListCategory";
 import ListEventCategory from "../../components/LandingPage/ListEventCategory";
 import ListPartner from "../../components/LandingPage/ListPartner";
+import { useEffect, useState } from "react";
+import axios from "../../utils/axios";
+import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 function LandingPage() {
+  const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [pagination, setPagination] = useState([]);
+  const [page, setPage] = useState(1);
+  const [dateShow, setDateShow] = useState(moment().format("YYYY-MM-DD")); // 2022-10-04
+  const [listDateShow, setListDateShow] = useState([]);
+  const [searchEvent, setSearchEvent] = useState("");
+
+  useEffect(() => {
+    getDataEvent();
+  }, []);
+
+  useEffect(() => {
+    getDataEvent();
+  }, [page]);
+
+  useEffect(() => {
+    generateDate();
+  }, [dateShow]);
+
+  const generateDate = () => {
+    let listDate = [
+      moment(dateShow).subtract(2, "days"),
+      moment(dateShow).subtract(1, "days"),
+      dateShow,
+      moment(dateShow).subtract(-1, "days"),
+      moment(dateShow).subtract(-2, "days"),
+    ];
+    setListDateShow(listDate);
+  };
+
+  const selectDate = (date) => {
+    setDateShow(date);
+  };
+
+  const getDataEvent = async () => {
+    try {
+      const result = await axios.get(
+        `/event?page=${page}&limit=4&search=${searchEvent}&column=&asc=`
+      );
+      setData(result.data.data);
+      setPagination(result.data.pagination);
+      console.log(searchEvent);
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handlePrevPage = () => {
+    setPage(page - 1);
+  };
+
+  const handleNextPage = () => {
+    setPage(page + 1);
+  };
+
+  const handleSearch = () => {
+    getDataEvent();
+  };
+
+  const handleChangeSearch = (e) => {
+    setSearchEvent(e.target.value);
+  };
+
+  const handleNavigateDetailEvent = (idEvent) => {
+    navigate(`/detail/${idEvent}`);
+  };
+
   return (
     <>
       <section className="h-screen bg-main-blue bg-hero bg-no-repeat bg-cover bg-center">
         <Header />
-        <Hero />
+        <Hero
+          searchEvent={"searchEvent"}
+          handleSearch={handleSearch}
+          handleChangeSearch={handleChangeSearch}
+        />
       </section>
       <section className="flex flex-col items-center xl:my-52 my-20">
         <HeaderSection
@@ -26,29 +103,34 @@ function LandingPage() {
           sectionCaption={"Event For You"}
           borderColor={"border-main-pink"}
         />
-        <ScheduleEvent />
+        <ScheduleEvent
+          handleNextPage={handleNextPage}
+          handlePrevPage={handlePrevPage}
+          page={page}
+          pagination={pagination}
+          listDateShow={listDateShow}
+          selectDate={selectDate}
+        />
 
         <div className="flex gap-x-8 xl:self-auto self-start pl-8 xl:pl-0">
-          <CardEvent
-            bgCardEvent={"bg-[url('./assets/img/event1-opacity.png')]"}
-            titleCardEvent={"Sight & Sounds Exhibition"}
-            dateCardEvent={"Wed, 15 Nov, 4:00 PM"}
-          />
-          <CardEvent
-            bgCardEvent={"bg-[url('./assets/img/event2.png')]"}
-            titleCardEvent={"See it in Gold Class"}
-            dateCardEvent={"Thu, 16 Nov, 7:00 PM"}
-          />
-          <CardEvent
-            bgCardEvent={"bg-[url('./assets/img/event1-opacity.png')]"}
-            titleCardEvent={"Sight & Sounds Exhibition"}
-            dateCardEvent={"Wed, 15 Nov, 4:00 PM"}
-          />
-          <CardEvent
-            bgCardEvent={"bg-[url('./assets/img/event2.png')]"}
-            titleCardEvent={"See it in Gold Class"}
-            dateCardEvent={"Thu, 16 Nov, 7:00 PM"}
-          />
+          {data.length > 0 ? (
+            data.map((item) => (
+              <CardEvent
+                key={item.eventId}
+                bgCardEvent={item.image}
+                titleCardEvent={item.name}
+                dateCardEvent={moment(item.dateTimeShow).format(
+                  "ddd, DD MMM, hh A"
+                )}
+                handleNavigateDetailEvent={handleNavigateDetailEvent}
+                idEvent={item.eventId}
+              />
+            ))
+          ) : (
+            <div className="text-center">
+              <h3>Data Not Found !</h3>
+            </div>
+          )}
         </div>
 
         <ButtonSeeAll borderColor={"border-main-blue"} />
