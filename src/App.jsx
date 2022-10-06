@@ -5,6 +5,7 @@ import Signup from "./pages/SignUp";
 
 import LandingPage from "./pages/LandingPage";
 import Detail from "./pages/Detail";
+import Order from "./pages/Order";
 // import Counter from "./pages/Counter/functional-components";
 
 import NotFound from "./pages/NotFound";
@@ -20,6 +21,7 @@ function App() {
         {/* MAIN */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/detail/:eventId" element={<Detail />} />
+        <Route path="/order/:eventId" element={<Order />} />
         {/* <Route path="/counter" element={<Counter />} /> */}
 
         {/* PAGE NOT FOUND */}

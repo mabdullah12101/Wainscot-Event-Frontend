@@ -9,10 +9,10 @@ import { Heart, HeartFill } from "react-bootstrap-icons";
 
 function Detail() {
   const navigate = useNavigate();
+  const userId = useState(localStorage.getItem("idUser"));
   const [data, setData] = useState({});
   const [dataUser, setDataUser] = useState({});
-  const [userId, setUserId] = useState("");
-  const [dataWishlist, setDataWishlist] = useState([]);
+  // const [dataWishlist, setDataWishlist] = useState([]);
   const [checkWishlist, setCheckWishlist] = useState();
   const { eventId } = useParams();
 
@@ -38,10 +38,8 @@ function Detail() {
 
   const getUserById = async () => {
     try {
-      const result = await axios.get(`/user/${localStorage.getItem("idUser")}`);
-      console.log(userId);
+      const result = await axios.get(`/user/${userId}`);
       setDataUser(result.data.data[0]);
-      setUserId(result.data.data[0].userId);
     } catch (error) {
       console.log(error);
     }
@@ -49,18 +47,14 @@ function Detail() {
 
   const getWishlistById = async () => {
     try {
-      const result = await axios.get(
-        `/wishlist/userId/${localStorage.getItem("idUser")}`
-      );
-      setDataWishlist(result.data.data);
+      const result = await axios.get(`/wishlist/userId/${userId}`);
+      // setDataWishlist(result.data.data);
       result.data.data.map((item) => {
         if (item.eventId === eventId) {
           setCheckWishlist(item.wishlistId);
         }
       });
       console.log(dataUser);
-      console.log(dataWishlist);
-      console.log(result);
     } catch (error) {
       console.log(error);
     }
@@ -81,7 +75,6 @@ function Detail() {
         userId: userId,
       });
       setCheckWishlist(result.data.data[0].wishlistId);
-      console.log(result);
     } catch (error) {
       console.log(error);
     }
@@ -89,9 +82,8 @@ function Detail() {
 
   const deleteWishlist = async () => {
     try {
-      const result = await axios.delete(`/wishlist/${checkWishlist}`);
+      await axios.delete(`/wishlist/${checkWishlist}`);
       setCheckWishlist("");
-      console.log(result);
     } catch (error) {
       console.log(error);
     }
@@ -109,7 +101,7 @@ function Detail() {
     }
   };
 
-  const handleBuyTicket = () => {
+  const handleBuyTicket = (eventId) => {
     navigate(`/order/${eventId}`);
   };
 
@@ -327,7 +319,7 @@ function Detail() {
             <img src={location} className="w-full xl:w-auto" alt="" />
             <button
               className="mt-16 bg-main-blue text-white font-bold tracking-wider py-4 px-28 rounded-2xl shadow-md shadow-blue-300 w-full xl:w-auto"
-              onClick={handleBuyTicket}
+              onClick={() => handleBuyTicket(eventId)}
             >
               Buy Tickets
             </button>
