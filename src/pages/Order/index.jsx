@@ -9,7 +9,7 @@ import ticketVVIP from "../../assets/img/vvip.png";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import axios from "../../utils/axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 // LIST SECTION
 // VVIP = VVIP(1...4)-1
@@ -17,18 +17,26 @@ import { useParams } from "react-router-dom";
 // REG = REG(1...4)-(1...9)
 
 export default function Order() {
+  const navigate = useNavigate();
+  const { eventId } = useParams();
   const [fullSeat, setFullSeat] = useState([]); // DI GUNAKAN UNTUK MENAMPUNG SEAT YANG FULL
   const [activeSeat, setActiveSeat] = useState([]); // DIGUNAKAN UNTUK MENAMPUNG SEAT YANG SEDANG DIPILIH
   const [dataOrder, setDataOrder] = useState([]); // DIGUNAKAN UNTUK MENAMPUNG SEAT YANG SUDAH TERPILIH
   // eslint-disable-next-line no-unused-vars
   const [listBooking, setListBooking] = useState([]); // DIGUNAKAN UNTUK MENAMPUNG LIST DATA SEAT YANG SUDAH DI BOOKING
   const [dataEvent, setDataEvent] = useState([]); // DIGUNAKAN UNTUK MENAMPUNG DATA EVENT
-  const { eventId } = useParams();
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [ticketSection, setTicketSection] = useState([]);
 
   useEffect(() => {
     getDataBooking();
     getDataEvent();
   }, []);
+
+  useEffect(() => {
+    getTotalPayment();
+    getTicketSection();
+  }, [dataOrder]);
 
   const getDataBooking = async () => {
     try {
@@ -36,7 +44,7 @@ export default function Order() {
       let dataFullSeat = result.data.data.filter((item) => item.statusFull);
       dataFullSeat = dataFullSeat.map((item) => item.section);
       setFullSeat(dataFullSeat);
-      setListBooking(result.data);
+      setListBooking(result.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -53,6 +61,7 @@ export default function Order() {
 
   const handleSelectSeat = (seat) => {
     // PROSES PEMILIHAN SEAT
+    // console.log("click");
     const data = seat.split("-");
     if (!fullSeat.includes(seat)) {
       if (activeSeat.includes(seat)) {
@@ -60,6 +69,7 @@ export default function Order() {
         const deleteDataOrder = dataOrder.filter((item) => item.seat !== seat);
         setActiveSeat(deleteSeat);
         setDataOrder(deleteDataOrder);
+        // ticketSection.add(deleteSeat);
       } else {
         setActiveSeat([...activeSeat, seat]);
         setDataOrder([
@@ -74,12 +84,52 @@ export default function Order() {
               : dataEvent[0].price, // HARGA TIDAK BERUBAH UNTUK REGULAR
           },
         ]);
+        // ticketSection.add(seat);
       }
     }
   };
 
+  const getTotalPayment = () => {
+    let totalPayment = 0;
+    dataOrder.map((item) => {
+      totalPayment = totalPayment + item.price;
+    });
+    setTotalPrice(totalPayment);
+  };
+
+  const getTicketSection = () => {
+    const section = [];
+    const fixSection = [];
+    dataOrder.map((item) => {
+      section.push(item.seat.slice(0, -3));
+    });
+    const setSection = new Set(section);
+    for (const item of setSection) {
+      fixSection.push(item);
+    }
+    setTicketSection(fixSection);
+  };
+
   const handleOrderSeat = () => {
-    console.log(dataOrder);
+    const section = [];
+    // let totalPrice = 0;
+    // const ticketSection = new Set(activeSeat);
+    dataOrder.map((item) => {
+      section.push(item.seat);
+      // totalPrice = totalPrice + item.price;
+      // console.log(section);
+      // console.log(totalPrice);
+    });
+    // console.log(ticketSection);
+    navigate("/payment", {
+      state: {
+        userId: localStorage.getItem("idUser"),
+        eventId: eventId,
+        totalTicket: section.length,
+        totalPayment: totalPrice,
+        section: section,
+      },
+    });
   };
 
   const clearOrderSeat = () => {
@@ -119,13 +169,9 @@ export default function Order() {
               <div className="overflow-auto h-80 mt-10 pt-6 mb-5 pr-4">
                 {dataOrder.map((item, index) => {
                   const data = item.seat.split("-");
-                  const dataSeat =
-                    listBooking.length > 0
-                      ? listBooking.filter(
-                          (element) => item.seat === element.section
-                        )
-                      : [];
-                  console.log(item.seat, data.section);
+                  const dataSeat = listBooking.filter(
+                    (itemSeat) => itemSeat.section === item.seat
+                  );
                   return (
                     <>
                       <div className="flex justify-between" key={index}>
@@ -146,20 +192,15 @@ export default function Order() {
                               SECTION {data[0]}, ROW {data[1]}
                             </h5>
                             <span className="text-xs text-[#BDC0C4] font-medium">
-                              {dataSeat ? (
-                                <p>{JSON.stringify(dataSeat)}</p>
-                              ) : data[0].includes("VVIP") ? (
-                                "10"
-                              ) : data[0].includes("VIP") ? (
-                                "20"
-                              ) : (
-                                "30"
-                              )}
-                              12 Seats available
+                              {dataSeat.length > 0
+                                ? dataSeat[0].available
+                                : data[0].includes("VVIP")
+                                ? 10
+                                : data[0].includes("VIP")
+                                ? 20
+                                : 30}{" "}
+                              Seats available
                             </span>
-                            {/* 
-                          Section {data[0]}, Row {data[1]} - $ {item.price}
-                          */}
                           </div>
                         </div>
                         <div className="font-bold tracking-wider">
@@ -205,22 +246,30 @@ export default function Order() {
             <div className="flex flex-col gap-y-4 mt-7 mb-10">
               <div className="flex justify-between items-center">
                 <span className="text-sm font-bold">Ticket Section</span>
-                <span className="text-sm font-bold text-main-blue">VIP</span>
+                <span className="text-sm font-bold text-main-blue">
+                  {dataOrder.length > 0
+                    ? ticketSection.map((item) => `${item} `)
+                    : "None"}
+                </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm font-bold">Quantity</span>
-                <span className="text-sm font-bold text-main-blue">2</span>
+                <span className="text-sm font-bold text-main-blue">
+                  {dataOrder.length}
+                </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm font-bold">Total Payment</span>
-                <span className="text-sm font-bold text-main-blue">$70</span>
+                <span className="text-sm font-bold text-main-blue">
+                  {dataOrder.length > 0 ? totalPrice : 0}
+                </span>
               </div>
             </div>
 
             <div className="flex flex-col">
               <button
                 className="mt-5 bg-main-blue text-white font-bold tracking-wider py-3 rounded-2xl shadow-md shadow-blue-300 disabled:opacity-50"
-                // disabled={activeSeat ? true : false}
+                disabled={activeSeat.length > 0 ? false : true}
                 onClick={handleOrderSeat}
               >
                 Checkout

@@ -1,18 +1,32 @@
 import logo from "../../assets/img/logo.png";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+  const navigate = useNavigate();
+
+  const handleNavigateBrand = () => {
+    navigate("/");
+  };
+
+  const handleNavigateAuthentication = (authentication) => {
+    navigate(`/${authentication}`);
+  };
+
   return (
     <>
       {/* HEADER */}
       <header className="xl:px-14 xl:py-4 px-6 py-2 bg-white">
         {/*  NAV  */}
         <nav className="flex flex-wrap justify-between items-center">
-          <div className="flex items-center text-sm">
+          <button
+            className="flex items-center text-sm"
+            onClick={handleNavigateBrand}
+          >
             <img src={logo} alt="Logo" />
             <span className="xl:text-2xl text-xl font-bold text-main-blue">
               Wain<span className="text-main-pink">scot</span>
             </span>
-          </div>
+          </button>
           <div className="hidden xl:block">
             <ul className="flex gap-x-14 font-bold tracking-wider">
               <li>
@@ -31,10 +45,16 @@ function Header() {
           </div>
           {/* No LOGIN */}
           <div className="hidden xl:block text-sm">
-            <button className="font-bold tracking-widest py-3 px-5 mr-5">
+            <button
+              className="font-bold tracking-widest py-3 px-5 mr-5"
+              onClick={() => handleNavigateAuthentication("signin")}
+            >
               Log In
             </button>
-            <button className="bg-main-blue text-white font-bold tracking-widest py-3 px-14 rounded-xl">
+            <button
+              className="bg-main-blue text-white font-bold tracking-widest py-3 px-14 rounded-xl"
+              onClick={() => handleNavigateAuthentication("signup")}
+            >
               Sign Up
             </button>
           </div>

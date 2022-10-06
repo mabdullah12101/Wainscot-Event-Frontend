@@ -9,12 +9,13 @@ import { Heart, HeartFill } from "react-bootstrap-icons";
 
 function Detail() {
   const navigate = useNavigate();
-  const userId = useState(localStorage.getItem("idUser"));
+  const userId = localStorage.getItem("idUser");
   const [data, setData] = useState({});
   const [dataUser, setDataUser] = useState({});
   // const [dataWishlist, setDataWishlist] = useState([]);
   const [checkWishlist, setCheckWishlist] = useState();
   const { eventId } = useParams();
+  console.log(userId);
 
   useEffect(() => {
     getEventById();
