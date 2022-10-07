@@ -222,7 +222,7 @@ export default function Order() {
                             ></i>
                           </button>
                           <span className="text-xs font-bold text-main-black">
-                            0
+                            1
                           </span>
                           <button className="border border-main-gray px-[1px] rounded-md">
                             <i

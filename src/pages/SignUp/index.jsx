@@ -28,7 +28,7 @@ export default function SignIn() {
         form
       );
       alert(result.data.message);
-      navigate("signin");
+      navigate("/signin");
     } catch (error) {
       alert(error.response.data.message);
     }
