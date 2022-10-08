@@ -128,6 +128,8 @@ export default function Order() {
         totalTicket: section.length,
         totalPayment: totalPrice,
         section: section,
+        nameEvent: dataEvent[0].name,
+        ticketSection: ticketSection,
       },
     });
   };
