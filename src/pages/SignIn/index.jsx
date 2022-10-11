@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from "react";
 import { useState } from "react";
 import axios from "../../utils/axios";
@@ -7,9 +6,12 @@ import { Eye } from "react-feather";
 import { EyeOff } from "react-feather";
 import logo from "../../assets/img/logo.png";
 import imgPeople from "../../assets/img/img-people.png";
+import { useDispatch } from "react-redux";
+import { getDataUser } from "../../stores/actions/user";
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [toast, setToast] = useState("");
   const [message, setMessage] = useState("");
 
@@ -24,11 +26,12 @@ export default function SignIn() {
     try {
       e.preventDefault();
       const result = await axios.post("auth/login", form);
-      localStorage.setItem("idUser", result.data.data[0].userId);
+      dispatch(getDataUser(result.data.data[0].userId));
+      // localStorage.setItem("idUser", result.data.data[0].userId);
       localStorage.setItem("token", result.data.data[0].token);
+      localStorage.setItem("refreshToken", result.data.data[0].refreshToken);
       setMessage(result.data.message);
       setToast("success");
-      // navigate("/");
     } catch (error) {
       setMessage(error.response.data.message);
       setToast("failed");

@@ -7,26 +7,37 @@ import LandingPage from "./pages/LandingPage";
 import Detail from "./pages/Detail";
 import Order from "./pages/Order";
 import Payment from "./pages/Payment";
-// import Counter from "./pages/Counter/functional-components";
+import Counter from "./pages/Counter/functionalComponent";
 
 import NotFound from "./pages/NotFound";
+
+import PublicRoute from "./utils/routes/publicRoute";
+import PrivateRoute from "./utils/routes/privateRoute";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* AUTH */}
-        <Route path="/signin" element={<Signin />} />
-        <Route path="/signup" element={<Signup />} />
+        {/* PUBLIC AUTH ROUTE */}
+        <Route element={<PublicRoute />}>
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
+        </Route>
 
         {/* MAIN */}
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/detail/:eventId" element={<Detail />} />
-        <Route path="/order/:eventId" element={<Order />} />
-        <Route path="/payment" element={<Payment />} />
-        {/* <Route path="/counter" element={<Counter />} /> */}
+        {/* PRIVATE ROUTE */}
+        <Route element={<PrivateRoute />}>
+          <Route path="/detail/:eventId" element={<Detail />} />
+          <Route path="/order/:eventId" element={<Order />} />
+          <Route path="/payment" element={<Payment />} />
+        </Route>
 
-        {/* PAGE NOT FOUND */}
+        {/* PRIVATE ADMIN ROUTE */}
+        <Route element={<PrivateRoute isAdmin={true} />}>{/* {...} */}</Route>
+
+        {/* PUBLIC ROUTE */}
+        <Route path="/counter" element={<Counter />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

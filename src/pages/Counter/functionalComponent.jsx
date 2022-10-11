@@ -1,23 +1,67 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  decrementCounter,
+  incrementCounter,
+} from "../../stores/actions/counter";
 
 function Counter() {
-  const [name, setName] = useState("");
-  // name = digunakan untukpemanggilan di dalam element html
-  // setName = digunakan untuk memanipulasi variabel
+  const counterData = useSelector((state) => state.counter);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log("COMPONENT DID MOUNT IS RUNNING !");
-    setTimeout(() => {
-      // PROSES PEMANGGILAN DATA DARI DATABASE
-      setName("Bagus Tri Harjanto");
-    }, 5000);
-  }, []);
+  const [counter, setCounter] = useState(0);
+
+  const increment = (data) => {
+    setCounter(counter + data);
+  };
+  const decrement = () => {
+    setCounter(counter - 1);
+  };
 
   return (
-    <div>
-      <h1>Counter App</h1>
-      <hr />
-      <h3>{name}</h3>
+    <div className="container text-center">
+      <div>
+        <h1>Counter App Without Redux</h1>
+        <hr />
+        <h3>{counter}</h3>
+        <button className="btn btn-primary" onClick={decrement}>
+          -
+        </button>
+        <button
+          className="btn btn-primary mx-2"
+          onClick={() => {
+            setCounter(0);
+          }}
+        >
+          Reset
+        </button>
+        <button className="btn btn-primary" onClick={() => increment(2)}>
+          +2
+        </button>
+        <hr />
+        <hr />
+        <h1>Counter App With Redux</h1>
+        <hr />
+        <h3>{counterData.count}</h3>
+        <button
+          className="btn btn-primary"
+          onClick={() => dispatch(decrementCounter())}
+        >
+          -
+        </button>
+        <button
+          className="btn btn-primary mx-2"
+          onClick={() => dispatch({ type: "RESET" })}
+        >
+          Reset
+        </button>
+        <button
+          className="btn btn-primary"
+          onClick={() => dispatch(incrementCounter(2))}
+        >
+          +2
+        </button>
+      </div>
     </div>
   );
 }
