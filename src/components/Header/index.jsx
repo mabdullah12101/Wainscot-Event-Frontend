@@ -72,7 +72,7 @@ function Header() {
                     : setDropdownProfile(true);
                 }}
               >
-                <button className="w-11 h-11 rounded-full bg-[url('./assets/img/profile.png')] bg-cover outline outline-offset-2 outline-[3px] outline-main-blue"></button>
+                <div className="w-11 h-11 rounded-full bg-[url('./assets/img/profile.png')] bg-cover outline outline-offset-2 outline-[3px] outline-main-blue"></div>
                 <span className="font-bold tracking-wider text-sm">
                   {user.data.name ? user.data.name : "Anonymous"}
                 </span>

@@ -7,7 +7,12 @@ import LandingPage from "./pages/LandingPage";
 import Detail from "./pages/Detail";
 import Order from "./pages/Order";
 import Payment from "./pages/Payment";
-import Counter from "./pages/Counter/functionalComponent";
+import EditProfile from "./pages/Profile/EditProfile";
+import ChangePassword from "./pages/Profile/ChangePassword";
+import MyBooking from "./pages/Profile/MyBooking";
+import MyWishlist from "./pages/Profile/MyWishlist";
+import ManageEvent from "./pages/Profile/ManageEvent";
+// import Counter from "./pages/Counter/functionalComponent";
 
 import NotFound from "./pages/NotFound";
 
@@ -30,13 +35,18 @@ function App() {
           <Route path="/detail/:eventId" element={<Detail />} />
           <Route path="/order/:eventId" element={<Order />} />
           <Route path="/payment" element={<Payment />} />
+          <Route path="/editprofile" element={<EditProfile />} />
+          <Route path="/changepassword" element={<ChangePassword />} />
+          <Route path="/mybooking" element={<MyBooking />} />
+          <Route path="/mywishlist" element={<MyWishlist />} />
+          <Route path="/manageevent" element={<ManageEvent />} />
         </Route>
 
         {/* PRIVATE ADMIN ROUTE */}
         <Route element={<PrivateRoute isAdmin={true} />}>{/* {...} */}</Route>
 
         {/* PUBLIC ROUTE */}
-        <Route path="/counter" element={<Counter />} />
+        {/* <Route path="/counter" element={<Counter />} /> */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
