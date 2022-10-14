@@ -14,7 +14,7 @@ function CardEvent({
       onClick={() => handleNavigateDetailEvent(idEvent)}
     >
       <img
-        src={`https://res.cloudinary.com/dra4ha50q/image/upload/v1664919867/${bgCardEvent}`}
+        src={process.env.REACT_APP_CLOUDINARY_URL_IMAGE + bgCardEvent}
         className="w-full h-full absolute right-0 -z-10 -mb-7 object-fill"
         alt=""
       />

@@ -8,6 +8,7 @@ function Header() {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const isLogin = localStorage.getItem("token");
+  const role = user.data.role;
   const [dropdownProfile, setDropdownProfile] = useState(false);
 
   const handleNavigateBrand = () => {
@@ -48,16 +49,21 @@ function Header() {
           <div className="hidden xl:block">
             <ul className="flex gap-x-14 font-bold tracking-wider">
               <li>
-                <a href="" className="text-main-blue">
+                <button
+                  className="text-main-blue"
+                  onClick={() => navigate("/")}
+                >
                   Home
-                </a>
+                </button>
                 <hr className="border-t-4 border-main-blue rounded-2xl mx-3 mt-3" />
               </li>
-              <li>
-                <a href="">Create Event</a>
+              <li className={`${role === "admin" ? "" : "hidden"}`}>
+                <button onClick={() => navigate("/manage-event")}>
+                  Create Event
+                </button>
               </li>
               <li>
-                <a href="">Location</a>
+                <button>Location</button>
               </li>
             </ul>
           </div>
@@ -72,7 +78,21 @@ function Header() {
                     : setDropdownProfile(true);
                 }}
               >
-                <div className="w-11 h-11 rounded-full bg-[url('./assets/img/profile.png')] bg-cover outline outline-offset-2 outline-[3px] outline-main-blue"></div>
+                <div
+                  className={`w-11 h-11 rounded-full outline outline-offset-2 outline-[3px] outline-main-blue overflow-hidden`}
+                >
+                  <img
+                    src={
+                      user.data.image
+                        ? process.env.REACT_APP_CLOUDINARY_URL_IMAGE +
+                          user.data.image
+                        : process.env.REACT_APP_CLOUDINARY_DEFAULT_IMAGE
+                    }
+                    alt=""
+                    className="w-full rounded-full"
+                  />
+                </div>
+
                 <span className="font-bold tracking-wider text-sm">
                   {user.data.name ? user.data.name : "Anonymous"}
                 </span>
@@ -86,7 +106,7 @@ function Header() {
                 id="dropdown"
                 className={`${
                   dropdownProfile ? "" : "hidden"
-                } z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 absolute right-0`}
+                } z-10 w-1/2 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 absolute right-0`}
               >
                 <ul
                   className="py-1 text-sm text-gray-700 dark:text-gray-200"
@@ -94,8 +114,31 @@ function Header() {
                 >
                   <li>
                     <a
-                      href="#"
-                      className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+                      onClick={() => navigate("/edit-profile")}
+                    >
+                      My Profile
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+                      onClick={() => navigate("/my-booking")}
+                    >
+                      My Booking
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+                      onClick={() => navigate("/my-wishlist")}
+                    >
+                      My Wishlist
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
                       onClick={handleLogout}
                     >
                       Sign out

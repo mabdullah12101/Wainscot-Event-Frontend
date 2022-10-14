@@ -39,11 +39,12 @@ function App() {
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/my-booking" element={<MyBooking />} />
           <Route path="/my-wishlist" element={<MyWishlist />} />
-          <Route path="/manage-event" element={<ManageEvent />} />
         </Route>
 
         {/* PRIVATE ADMIN ROUTE */}
-        <Route element={<PrivateRoute isAdmin={true} />}>{/* {...} */}</Route>
+        <Route element={<PrivateRoute isAdmin={true} />}>
+          <Route path="/manage-event" element={<ManageEvent />} />
+        </Route>
 
         {/* PUBLIC ROUTE */}
         {/* <Route path="/counter" element={<Counter />} /> */}
