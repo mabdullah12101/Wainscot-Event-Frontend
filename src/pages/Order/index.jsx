@@ -10,6 +10,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import axios from "../../utils/axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // LIST SECTION
 // VVIP = VVIP(1...4)-1
@@ -19,6 +20,7 @@ import { useParams, useNavigate } from "react-router-dom";
 export default function Order() {
   const navigate = useNavigate();
   const { eventId } = useParams();
+  const userId = useSelector((state) => state.user.data.userId);
   const [fullSeat, setFullSeat] = useState([]); // DI GUNAKAN UNTUK MENAMPUNG SEAT YANG FULL
   const [activeSeat, setActiveSeat] = useState([]); // DIGUNAKAN UNTUK MENAMPUNG SEAT YANG SEDANG DIPILIH
   const [dataOrder, setDataOrder] = useState([]); // DIGUNAKAN UNTUK MENAMPUNG SEAT YANG SUDAH TERPILIH
@@ -123,7 +125,7 @@ export default function Order() {
     // console.log(ticketSection);
     navigate("/payment", {
       state: {
-        userId: localStorage.getItem("idUser"),
+        userId: userId,
         eventId: eventId,
         totalTicket: section.length,
         totalPayment: totalPrice,
@@ -270,7 +272,9 @@ export default function Order() {
 
             <div className="flex flex-col">
               <button
-                className="mt-5 bg-main-blue text-white font-bold tracking-wider py-3 rounded-2xl shadow-md shadow-blue-300 disabled:opacity-50"
+                className={`${
+                  activeSeat.length > 0 ? "" : "cursor-not-allowed"
+                } mt-5 bg-main-blue text-white font-bold tracking-wider py-3 rounded-2xl shadow-md shadow-blue-300 disabled:opacity-50`}
                 disabled={activeSeat.length > 0 ? false : true}
                 onClick={handleOrderSeat}
               >

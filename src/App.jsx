@@ -35,11 +35,11 @@ function App() {
           <Route path="/detail/:eventId" element={<Detail />} />
           <Route path="/order/:eventId" element={<Order />} />
           <Route path="/payment" element={<Payment />} />
-          <Route path="/editprofile" element={<EditProfile />} />
-          <Route path="/changepassword" element={<ChangePassword />} />
-          <Route path="/mybooking" element={<MyBooking />} />
-          <Route path="/mywishlist" element={<MyWishlist />} />
-          <Route path="/manageevent" element={<ManageEvent />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="/my-booking" element={<MyBooking />} />
+          <Route path="/my-wishlist" element={<MyWishlist />} />
+          <Route path="/manage-event" element={<ManageEvent />} />
         </Route>
 
         {/* PRIVATE ADMIN ROUTE */}

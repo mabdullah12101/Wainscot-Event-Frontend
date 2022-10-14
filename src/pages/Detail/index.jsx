@@ -1,25 +1,28 @@
 import Footer from "../../components/Footer";
-import logo from "../../assets/img/logo.png";
+import Header from "../../components/Header";
 import location from "../../assets/img/location.png";
 import { useState, useEffect } from "react";
 import axios from "../../utils/axios";
 import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment/moment";
 import { Heart, HeartFill } from "react-bootstrap-icons";
+import { useSelector } from "react-redux";
 
 function Detail() {
   const navigate = useNavigate();
-  const userId = localStorage.getItem("idUser");
+  const dataUser = useSelector((state) => state.user.data);
+  const userId = dataUser.userId;
   const [data, setData] = useState({});
-  const [dataUser, setDataUser] = useState({});
+  // const [dataUser, setDataUser] = useState({});
   // const [dataWishlist, setDataWishlist] = useState([]);
   const [checkWishlist, setCheckWishlist] = useState();
   const { eventId } = useParams();
-  console.log(userId);
+  // console.log(userId);
+  // console.log(dataUser);
 
   useEffect(() => {
     getEventById();
-    getUserById();
+    // getUserById();
     getWishlistById();
     // wishlistSame();
   }, []);
@@ -37,14 +40,14 @@ function Detail() {
     }
   };
 
-  const getUserById = async () => {
-    try {
-      const result = await axios.get(`/user/${userId}`);
-      setDataUser(result.data.data[0]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getUserById = async () => {
+  //   try {
+  //     const result = await axios.get(`/user/${userId}`);
+  //     setDataUser(result.data.data[0]);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const getWishlistById = async () => {
     try {
@@ -55,7 +58,6 @@ function Detail() {
           setCheckWishlist(item.wishlistId);
         }
       });
-      console.log(dataUser);
     } catch (error) {
       console.log(error);
     }
@@ -109,47 +111,7 @@ function Detail() {
   return (
     <div className="xl:bg-young-blue">
       <section className="h-screen bg-white xl:hidden">
-        {/* <!-- HEADER --> */}
-        <header className="xl:px-14 xl:py-4 px-6 pt-2 pb-6 bg-white">
-          {/* <!-- NAV --> */}
-          <nav className="flex flex-wrap justify-between items-center">
-            <div className="flex items-center">
-              <img src={logo} alt="Logo" />
-              <span className="xl:text-2xl text-xl font-bold text-main-blue">
-                Wain<span className="text-main-pink">scot</span>
-              </span>
-            </div>
-            <div className="hidden xl:block text-sm">
-              <ul className="flex gap-x-14 font-bold tracking-wider">
-                <li>
-                  <a href="" className="text-main-blue">
-                    Home
-                  </a>
-                  <hr className="border-t-4 border-main-blue rounded-2xl mx-3 mt-3" />
-                </li>
-                <li>
-                  <a href="">Create Event</a>
-                </li>
-                <li>
-                  <a href="">Location</a>
-                </li>
-              </ul>
-            </div>
-            <div className="hidden xl:flex items-center gap-x-5">
-              <button className="w-11 h-11 rounded-full bg-[url('./assets/img/profile.png')] bg-cover outline outline-offset-2 outline-[3px] outline-main-blue"></button>
-              <span className="font-bold tracking-wider text-sm">
-                Jhon Tomson
-              </span>
-            </div>
-
-            {/* <!-- HAMBURGER MENU --> */}
-            <div className="text-2xl sm:hidden">
-              <button>
-                <i className="iconify" data-icon="bytesize:menu"></i>
-              </button>
-            </div>
-          </nav>
-        </header>
+        <Header />
 
         <section className="h-5/6 text-white flex flex-col justify-center px-8 relative overflow-hidden w-full">
           <img
@@ -200,47 +162,9 @@ function Detail() {
         </section>
       </section>
 
-      {/* <!-- HEADER --> */}
-      <header className="xl:px-14 xl:py-4 px-6 pt-2 pb-6 bg-white hidden xl:block">
-        {/* <!-- NAV --> */}
-        <nav className="flex flex-wrap justify-between items-center">
-          <div className="flex items-center">
-            <img src={logo} alt="Logo" />
-            <span className="xl:text-2xl text-xl font-bold text-main-blue">
-              We<span className="text-main-pink">tick</span>
-            </span>
-          </div>
-          <div className="hidden xl:block text-sm">
-            <ul className="flex gap-x-14 font-bold tracking-wider">
-              <li>
-                <a href="" className="text-main-blue">
-                  Home
-                </a>
-                <hr className="border-t-4 border-main-blue rounded-2xl mx-3 mt-3" />
-              </li>
-              <li>
-                <a href="">Create Event</a>
-              </li>
-              <li>
-                <a href="">Location</a>
-              </li>
-            </ul>
-          </div>
-          <div className="hidden xl:flex items-center gap-x-5">
-            <button className="w-11 h-11 rounded-full bg-[url('./assets/img/profile.png')] bg-cover outline outline-offset-2 outline-[3px] outline-main-blue"></button>
-            <span className="font-bold tracking-wider text-sm">
-              Jhon Tomson
-            </span>
-          </div>
-
-          {/* <!-- HAMBURGER MENU --> */}
-          <div className="text-2xl sm:hidden">
-            <button>
-              <i className="iconify" data-icon="bytesize:menu"></i>
-            </button>
-          </div>
-        </nav>
-      </header>
+      <div className="hidden xl:block">
+        <Header />
+      </div>
 
       {/* <!-- MAIN --> */}
       <main>
