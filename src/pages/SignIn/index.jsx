@@ -8,6 +8,7 @@ import logo from "../../assets/img/logo.png";
 import imgPeople from "../../assets/img/img-people.png";
 import { useDispatch } from "react-redux";
 import { getDataUserById } from "../../stores/actions/user";
+import { getAllWishlishtByUserId } from "../../stores/actions/wishlist";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ export default function SignIn() {
       e.preventDefault();
       const result = await axios.post("auth/login", form);
       dispatch(getDataUserById(result.data.data[0].userId));
+      dispatch(getAllWishlishtByUserId(result.data.data[0].userId));
       // localStorage.setItem("idUser", result.data.data[0].userId);
       localStorage.setItem("token", result.data.data[0].token);
       localStorage.setItem("refreshToken", result.data.data[0].refreshToken);
