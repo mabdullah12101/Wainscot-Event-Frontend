@@ -49,7 +49,7 @@ const user = (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: true,
-        message: action.payload.message,
+        message: action.payload.response.data.message,
       };
     }
     case "UPDATE_IMAGE_BY_ID_PENDING": {
@@ -73,7 +73,31 @@ const user = (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: true,
-        message: action.payload.message,
+        message: action.payload.response.data.message,
+      };
+    }
+    case "UPDATE_PASSWORD_BY_ID_PENDING": {
+      return {
+        ...state,
+        isLoading: true,
+        isError: false,
+        message: "",
+      };
+    }
+    case "UPDATE_PASSWORD_BY_ID_FULFILLED": {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        message: action.payload.data.message,
+      };
+    }
+    case "UPDATE_PASSWORD_BY_ID_REJECTED": {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload.response.data.message,
       };
     }
     default: {

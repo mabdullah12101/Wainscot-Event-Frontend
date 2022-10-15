@@ -175,12 +175,12 @@ export default function SignIn() {
               onChange={handleChangeForm}
             />
             <div className="relative">
-              <button
+              <div
                 onClick={handleShowPassword}
-                className="absolute right-0 mt-4 mr-2 text-[#3366ff]"
+                className="absolute right-0 mt-4 mr-2 text-[#3366ff] cursor-pointer"
               >
                 {showPassword ? <EyeOff /> : <Eye />}
-              </button>
+              </div>
               <input
                 className="focus:outline-blue-50 focus:ring-4 mb-5 px-6 py-4 border border-main-gray rounded-2xl placeholder:text-gray-400 w-full"
                 type={showPassword ? "text" : "password"}

@@ -183,7 +183,10 @@ function EditProfile() {
             <div className="w-11 h-11 rounded-full outline outline-offset-2 outline-[3px] outline-main-blue overflow-hidden">
               <img
                 src={
-                  process.env.REACT_APP_CLOUDINARY_URL_IMAGE + user.data.image
+                  user.data.image
+                    ? process.env.REACT_APP_CLOUDINARY_URL_IMAGE +
+                      user.data.image
+                    : process.env.REACT_APP_CLOUDINARY_DEFAULT_IMAGE
                 }
                 alt=""
                 className="w-full rounded-full"
@@ -193,7 +196,7 @@ function EditProfile() {
               <p className="font-bold tracking-wider text-sm">
                 {user.data.name ? user.data.name : "Anonymous"}
               </p>
-              <p className="text-xs opacity-75">Entrepeneur, ID</p>
+              <p className="text-xs opacity-75">{user.data.profession}</p>
             </div>
           </div>
 
@@ -577,8 +580,10 @@ function EditProfile() {
                   src={
                     lengthImage > 0
                       ? imagePreview
-                      : process.env.REACT_APP_CLOUDINARY_URL_IMAGE +
+                      : user.data.image
+                      ? process.env.REACT_APP_CLOUDINARY_URL_IMAGE +
                         user.data.image
+                      : process.env.REACT_APP_CLOUDINARY_DEFAULT_IMAGE
                   }
                   className="rounded-full w-full"
                   alt=""

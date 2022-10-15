@@ -2,12 +2,40 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useSelector } from "react-redux";
 import { Icon } from "@iconify/react";
-// import { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "../../utils/axios";
 
 function MyBooking() {
+  const navigate = useNavigate();
+  const [profileSidebar, setProfileSideBar] = useState(true);
   const user = useSelector((state) => state.user);
-  const isAdmin = true;
+  const role = user.data.role;
+
   const booking = true;
+
+  const handleSidebar = (sidebar) => {
+    switch (sidebar) {
+      case "profile":
+        setProfileSideBar(profileSidebar ? false : true);
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await axios.post("/auth/logout", {
+        refreshtoken: localStorage.getItem("refreshToken"),
+      });
+      localStorage.clear();
+      navigate("/signin");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   // const [dataUser, setDataUser] = useState(user.data);
 
   return (
@@ -16,95 +44,144 @@ function MyBooking() {
       <div className="flex xl:mx-16 xl:mt-12 xl:flex-row flex-col px-8">
         <section className="xl:basis-3/12 hidden xl:block">
           <div className="flex items-center">
-            <div className="w-11 h-11 rounded-full bg-[url('./assets/img/profile.png')] bg-cover outline outline-offset-2 outline-[3px] outline-main-blue"></div>
+            <div className="w-11 h-11 rounded-full outline outline-offset-2 outline-[3px] outline-main-blue overflow-hidden">
+              <img
+                src={
+                  user.data.image
+                    ? process.env.REACT_APP_CLOUDINARY_URL_IMAGE +
+                      user.data.image
+                    : process.env.REACT_APP_CLOUDINARY_DEFAULT_IMAGE
+                }
+                alt=""
+                className="w-full rounded-full"
+              />
+            </div>
             <div className="ml-3">
               <p className="font-bold tracking-wider text-sm">
                 {user.data.name ? user.data.name : "Anonymous"}
               </p>
-              <p className="text-xs opacity-75">Entrepeneur, ID</p>
+              <p className="text-xs opacity-75">{user.data.profession}</p>
             </div>
           </div>
 
-          <div className="flex flex-col gap-y-8 mt-12">
-            <div>
-              <div className="flex items-center">
+          <div className="flex flex-col gap-y-8 mt-12" id="sidebar">
+            <div id="sidebar-profile">
+              <button
+                className="flex items-center"
+                onClick={() => handleSidebar("profile")}
+              >
                 <Icon
                   className="text-2xl bg-main-gray text-white rounded-full"
                   icon="healthicons:ui-user-profile"
                 />
-                <button className="w-fit text-sm font-bold tracking-wider ml-6">
+                <div className="w-fit text-sm font-bold tracking-wider ml-6">
                   Profile
-                </button>
-              </div>
+                </div>
+              </button>
 
-              <div className="flex flex-col ml-6 gap-y-8 mt-8">
-                <div className="flex items-center">
+              <div
+                className={`${
+                  profileSidebar ? "" : "hidden"
+                } grid ml-6 gap-y-8 mt-8`}
+              >
+                <button
+                  className="flex items-center"
+                  onClick={() => navigate("/edit-profile")}
+                >
                   <Icon
                     className="text-2xl text-main-gray"
                     icon="ant-design:edit-filled"
                   />
-                  <button className="w-fit text-sm font-bold tracking-wider ml-6">
+                  <div className="w-fit text-sm font-bold tracking-wider ml-6">
                     Edit Profile
-                  </button>
-                </div>
+                  </div>
+                </button>
 
-                <div className="flex items-center">
+                <button
+                  className="flex items-center"
+                  onClick={() => navigate("/change-password")}
+                >
                   <Icon
                     className="text-2xl text-main-gray"
                     icon="bxs:lock-open-alt"
                   />
-                  <button className="w-fit text-sm font-bold tracking-wider ml-6">
+                  <div className="w-fit text-sm font-bold tracking-wider ml-6">
                     Change Password
-                  </button>
-                </div>
+                  </div>
+                </button>
               </div>
             </div>
 
-            {isAdmin ? (
-              <div className="flex items-center">
-                <Icon
-                  className="text-2xl text-main-gray"
-                  icon="ic:round-add-circle"
-                />
-                <button className="w-fit text-sm font-bold tracking-wider ml-6">
-                  Create Event
+            {role === "admin" ? (
+              <div id="sidebar-create_event">
+                <button
+                  className="flex items-center"
+                  onClick={() => navigate("/manage-event")}
+                >
+                  <Icon
+                    className="text-2xl text-main-gray"
+                    icon="ic:round-add-circle"
+                  />
+                  <div className="w-fit text-sm font-bold tracking-wider ml-6">
+                    Create Event
+                  </div>
                 </button>
               </div>
             ) : (
               ""
             )}
 
-            <div className="flex items-center text-main-blue">
-              <Icon className="text-2xl" icon="jam:task-list-f" />
-              <button className="w-fit text-sm font-bold tracking-wider ml-6">
-                My Booking
+            <div id="sidebar-my_booking">
+              <button
+                className="flex items-center text-main-blue"
+                onClick={() => navigate("/my-booking")}
+              >
+                <Icon className="text-2xl" icon="jam:task-list-f" />
+                <div className="w-fit text-sm font-bold tracking-wider ml-6">
+                  My Booking
+                </div>
               </button>
             </div>
 
-            <div className="flex items-center">
-              <Icon
-                className="text-2xl text-main-gray"
-                icon="ant-design:heart-filled"
-              />
-              <button className="w-fit text-sm font-bold tracking-wider ml-6">
-                My Wishlists
+            <div id="sidebar-my_wishlist">
+              <button
+                className="flex items-center"
+                onClick={() => navigate("/my-wishlist")}
+              >
+                <Icon
+                  className="text-2xl text-main-gray"
+                  icon="ant-design:heart-filled"
+                />
+                <div className="w-fit text-sm font-bold tracking-wider ml-6">
+                  My Wishlists
+                </div>
               </button>
             </div>
 
-            <div className="flex items-center">
-              <Icon
-                className="text-2xl text-main-gray"
-                icon="clarity:settings-solid"
-              />
-              <button className="w-fit text-sm font-bold tracking-wider ml-6">
-                Settings
+            <div id="sidebar-settings">
+              <button
+                className="flex items-center"
+                onClick={() => navigate("/setting")}
+              >
+                <Icon
+                  className="text-2xl text-main-gray"
+                  icon="clarity:settings-solid"
+                />
+                <div className="w-fit text-sm font-bold tracking-wider ml-6">
+                  Settings
+                </div>
               </button>
             </div>
 
-            <div className="flex items-center text-red-500">
-              <Icon className="text-2xl" icon="carbon:logout" />
-              <button className="w-fit text-sm font-bold tracking-wider ml-6">
-                Logout
+            <div id="sidebar-logout">
+              <button
+                className="flex items-center text-red-500"
+                onClick={handleLogout}
+              >
+                <Icon className="text-2xl" icon="carbon:logout" />
+                <div className="w-fit text-sm font-bold tracking-wider ml-6">
+                  Logout
+                </div>
               </button>
             </div>
           </div>
