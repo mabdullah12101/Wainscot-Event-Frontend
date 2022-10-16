@@ -1,9 +1,9 @@
 import axios from "../../utils/axios";
 
-export const getBookingByUserId = (userId) => {
+export const getBookingByUserId = (userId, page) => {
   return {
     type: "GET_BOOOKING_BY_USER_ID",
-    payload: axios.get(`booking/${userId}`),
+    payload: axios.get(`booking/${userId}?page=${page}`),
   };
 };
 
