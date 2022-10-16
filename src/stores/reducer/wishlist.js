@@ -3,6 +3,7 @@ const initialState = {
   isLoading: false,
   isError: false,
   message: "",
+  pagination: {},
 };
 
 const wishlists = (state = initialState, action) => {
@@ -12,6 +13,9 @@ const wishlists = (state = initialState, action) => {
         ...state,
         data: {},
         isLoading: true,
+        pagination: {},
+        message: "",
+        isError: false,
       };
     }
     case "GET_ALL_WISHLIST_BY_USER_ID_FULFILLED": {
@@ -19,6 +23,7 @@ const wishlists = (state = initialState, action) => {
         ...state,
         data: action.payload.data.data,
         isLoading: false,
+        pagination: action.payload.data.pagination,
       };
     }
     case "GET_ALL_WISHLIST_BY_USER_ID_REJECTED": {
@@ -26,6 +31,7 @@ const wishlists = (state = initialState, action) => {
         ...state,
         data: {},
         isLoading: false,
+        pagination: {},
       };
     }
     case "DELETE_WISHLIST_PENDING": {

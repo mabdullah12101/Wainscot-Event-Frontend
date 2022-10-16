@@ -25,7 +25,6 @@ function ChangePassword() {
   const user = useSelector((state) => state.user);
   const role = user.data.role;
 
-  // const [dataUser, setDataUser] = useState(user.data);
   const handleSidebar = (sidebar) => {
     switch (sidebar) {
       case "profile":
@@ -73,11 +72,8 @@ function ChangePassword() {
 
   const handleChangePassword = (e) => {
     e.preventDefault();
-    setToast(true);
     dispatch(updatePassword(user.data.userId, form)).then(() => {
-      if (!user.isError) {
-        dispatch(getDataUserById(user.data.userId));
-      }
+      setToast(true);
     });
   };
 
@@ -88,6 +84,7 @@ function ChangePassword() {
       newPassword: "",
       confirmPassword: "",
     });
+    dispatch(getDataUserById(user.data.userId));
   };
 
   return (

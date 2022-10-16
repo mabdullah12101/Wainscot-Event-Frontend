@@ -1,11 +1,9 @@
 import axios from "../../utils/axios";
 
-export const getAllEvents = () => {
+export const getAllEvents = (page) => {
   return {
     type: "GET_ALL_EVENTS",
-    payload: axios.get(
-      "/event?page=&limit=4&search=&searchDateShow=&column=&asc="
-    ),
+    payload: axios.get(`/event?page=${page}`),
   };
 };
 

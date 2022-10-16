@@ -2,8 +2,8 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "@iconify/react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "../../utils/axios";
 // import { getAllWishlishtByUserId } from "../../stores/actions/wishlist";
 import moment from "moment";
@@ -11,6 +11,7 @@ import {
   deleteWishlist,
   getAllWishlishtByUserId,
 } from "../../stores/actions/wishlist";
+import qs from "query-string";
 
 function MyWishlist() {
   const [profileSidebar, setProfileSideBar] = useState(true);
@@ -23,12 +24,30 @@ function MyWishlist() {
   const wishlists = useSelector((state) => state.wishlists);
   const role = user.data.role;
   const navigate = useNavigate();
-  console.log(wishlists);
-  // const [dataUser, setDataUser] = useState(user.data);
+  const [searchParams] = useSearchParams();
+  const params = Object.fromEntries([...searchParams]);
+  const paramsPage = params.page ? +params.page : 1;
 
-  // useEffect(() => {
-  //   dispatch(getAllWishlishtByUserId(user.data.userId));
-  // }, []);
+  useEffect(() => {
+    dispatch(getAllWishlishtByUserId(user.data.userId, paramsPage));
+  }, [paramsPage]);
+
+  const useNavigateSearch = (data) => {
+    let query = { ...params, ...data };
+    if (query.page === 1) {
+      delete query.page;
+    }
+    query = qs.stringify(query);
+    navigate(`/my-wishlist?${query}`);
+  };
+
+  const handlePrevPage = () => {
+    useNavigateSearch({ page: paramsPage - 1 });
+  };
+
+  const handleNextPage = () => {
+    useNavigateSearch({ page: paramsPage + 1 });
+  };
 
   const handleSidebar = (sidebar) => {
     switch (sidebar) {
@@ -64,7 +83,7 @@ function MyWishlist() {
     dispatch(deleteWishlist(wishlistId)).then(() => {
       setDeleteModal(false);
       if (!wishlists.isError) {
-        dispatch(getAllWishlishtByUserId(user.data.userId));
+        dispatch(getAllWishlishtByUserId(user.data.userId, paramsPage));
       }
     });
   };
@@ -417,17 +436,41 @@ function MyWishlist() {
         </section>
 
         <section
-          className={`xl:basis-9/12 bg-white rounded-3xl pt-11 pb-14 xl:px-12 xl:block flex flex-col ${
+          className={`relative xl:basis-9/12 bg-white rounded-3xl pt-11 pb-14 xl:px-12 xl:block flex flex-col ${
             wishlists.data.length > 0 ? "xl:h-[880px]" : "xl:h-[560px]"
           }`}
         >
           <h2 className="font-bold text-xl tracking-wider">My Wishlist</h2>
 
-          {wishlists.data.length > 0 ? (
+          {wishlists.isLoading ? (
+            <div className="flex justify-center items-center h-full xl:mt-0 mt-36">
+              <div className="text-center">
+                <div role="status">
+                  <svg
+                    aria-hidden="true"
+                    className="mr-2 w-16 h-16 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                    viewBox="0 0 100 101"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                      fill="currentColor"
+                    ></path>
+                    <path
+                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                      fill="currentFill"
+                    ></path>
+                  </svg>
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </div>
+            </div>
+          ) : wishlists.data.length > 0 ? (
             <div className="mt-14 flex flex-col gap-y-5">
               {wishlists.data.map((item) => (
                 <div
-                  className="flex gap-x-9 border-b pb-7"
+                  className="flex gap-x-9 border-b pb-4"
                   key={item.wishlistId}
                 >
                   <div className="text-center mt-4 w-10">
@@ -462,87 +505,30 @@ function MyWishlist() {
                   >
                     <Icon icon={"ant-design:heart-outlined"} />
                   </button>
-                  {/* <Icon
-                    icon={"ant-design:heart-outlined"}
-                    className={"ml-auto text-main-blue text-[35px]"}
-                  /> */}
                 </div>
-                // <hr />
               ))}
-
-              {/* <div className="flex gap-x-9">
-                <div className="text-center mt-4">
-                  <div className="text-sm text-[#FF8900] font-bold">15</div>
-                  <small className="text-xs text-[#C1C5D0]">Wed</small>
+              <div className="absolute bottom-5 flex justify-center w-full">
+                <div className="flex gap-x-5">
+                  <button
+                    className={`text-2xl bg-main-blue text-white rounded-lg px-5 py-2 disabled:cursor-not-allowed disabled:opacity-50`}
+                    disabled={paramsPage === 1 ? true : false}
+                    onClick={handlePrevPage}
+                  >
+                    <Icon icon={"akar-icons:arrow-left"} />
+                  </button>
+                  <button
+                    className={`text-2xl bg-main-blue text-white rounded-lg px-5 py-2 disabled:cursor-not-allowed disabled:opacity-50`}
+                    disabled={
+                      paramsPage === wishlists.pagination.totalPage
+                        ? true
+                        : false
+                    }
+                    onClick={handleNextPage}
+                  >
+                    <Icon icon={"akar-icons:arrow-right"} />
+                  </button>
                 </div>
-
-                <div>
-                  <h2 className="font-bold text-2xl tracking-widest">
-                    Sights & Sounds Exhibition
-                  </h2>
-
-                  <div className="text-xs tracking-wide text-[#373A42BF] mt-4">
-                    <p className="mb-2">Jakarta, Indonesia</p>
-                    <p className="mb-3">Wed, 15 Nov, 4:00 PM</p>
-                    <p className="font-medium text-main-blue">Detail</p>
-                  </div>
-                </div>
-
-                <Icon
-                  icon={"ant-design:heart-outlined"}
-                  className={"ml-auto text-main-blue text-[35px]"}
-                />
               </div>
-              <hr />
-
-              <div className="flex gap-x-9">
-                <div className="text-center mt-4">
-                  <div className="text-sm text-[#FF8900] font-bold">15</div>
-                  <small className="text-xs text-[#C1C5D0]">Wed</small>
-                </div>
-
-                <div>
-                  <h2 className="font-bold text-2xl tracking-widest">
-                    Sights & Sounds Exhibition
-                  </h2>
-
-                  <div className="text-xs tracking-wide text-[#373A42BF] mt-4">
-                    <p className="mb-2">Jakarta, Indonesia</p>
-                    <p className="mb-3">Wed, 15 Nov, 4:00 PM</p>
-                    <p className="font-medium text-main-blue">Detail</p>
-                  </div>
-                </div>
-
-                <Icon
-                  icon={"ant-design:heart-outlined"}
-                  className={"ml-auto text-main-blue text-[35px]"}
-                />
-              </div>
-              <hr />
-
-              <div className="flex gap-x-9">
-                <div className="text-center mt-4">
-                  <div className="text-sm text-[#FF8900] font-bold">15</div>
-                  <small className="text-xs text-[#C1C5D0]">Wed</small>
-                </div>
-
-                <div>
-                  <h2 className="font-bold text-2xl tracking-widest">
-                    Sights & Sounds Exhibition
-                  </h2>
-
-                  <div className="text-xs tracking-wide text-[#373A42BF] mt-4">
-                    <p className="mb-2">Jakarta, Indonesia</p>
-                    <p className="mb-3">Wed, 15 Nov, 4:00 PM</p>
-                    <p className="font-medium text-main-blue">Detail</p>
-                  </div>
-                </div>
-
-                <Icon
-                  icon={"ant-design:heart-outlined"}
-                  className={"ml-auto text-main-blue text-[35px]"}
-                />
-              </div> */}
             </div>
           ) : (
             <div className="flex justify-center items-center h-full xl:mt-0 mt-36">

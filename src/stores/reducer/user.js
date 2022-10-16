@@ -12,6 +12,8 @@ const user = (state = initialState, action) => {
         ...state,
         data: {},
         isLoading: true,
+        isError: false,
+        message: "",
       };
     }
     case "GET_USER_BY_ID_FULFILLED": {

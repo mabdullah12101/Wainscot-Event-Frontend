@@ -27,7 +27,6 @@ function MyBooking() {
   }, [paramsPage]);
 
   const useNavigateSearch = (data) => {
-    dispatch(getBookingByUserId(user.data.userId, paramsPage));
     let query = { ...params, ...data };
     if (query.page === 1) {
       delete query.page;
