@@ -6,3 +6,10 @@ export const getBookingByUserId = (userId) => {
     payload: axios.get(`booking/${userId}`),
   };
 };
+
+export const createBooking = (data) => {
+  return {
+    type: "CREATE_BOOKING",
+    payload: axios.post("/booking", data),
+  };
+};

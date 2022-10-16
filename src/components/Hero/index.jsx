@@ -18,10 +18,15 @@ function Hero({ searchEvent, handleSearch, handleChangeSearch }) {
           </div>
           <div className="border-r-2 my-3 xl:mx-3 "></div>
           <div className="bg-[url('https://api.iconify.design/ep/location.svg?color=%23d1d5db&width=28')] bg-no-repeat bg-left xl:w-5/12">
-            <input
+            <select
               className="py-7 xl:pl-10 xl:pr-0 pl-8 bg-transparent xl:w-full focus:outline-none"
               placeholder="Where?"
-            />
+              name="asc"
+              onChange={handleChangeSearch}
+            >
+              <option value="true">ASC</option>
+              <option value="false">DSC</option>
+            </select>
           </div>
           <div className="self-center mr-3 xl:ml-4 text-white text-2xl xl:w-1/12">
             <button

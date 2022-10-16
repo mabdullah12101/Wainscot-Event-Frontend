@@ -12,14 +12,28 @@ import ListPartner from "../../components/LandingPage/ListPartner";
 import { useEffect, useState } from "react";
 import axios from "../../utils/axios";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import qs from "query-string";
 
 function LandingPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const params = Object.fromEntries([...searchParams]);
+  const paramsPage = params.page ? +params.page : 1;
+  const paramsName = params.search ? params.search : "";
+  const paramsDate = params.searchDateTimeShow
+    ? params.searchDateTimeShow
+    : moment().format("YYYY-MM-DD");
+  const paramsSort = params.asc ? params.asc : true;
+  // console.log(paramsPage);
+  // console.log(paramsName);
+  // console.log(paramsDate);
+  // console.log(paramsSort);
+
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState([]);
-  const [page, setPage] = useState(1);
-  const [dateShow, setDateShow] = useState(moment().format("YYYY-MM-DD")); // 2022-10-04
+  // const [page, setPage] = useState(1);
+  // const [dateShow, setDateShow] = useState(moment().format("YYYY-MM-DD")); // 2022-10-04
   const [listDateShow, setListDateShow] = useState([]);
   const [searchEvent, setSearchEvent] = useState("");
 
@@ -29,55 +43,70 @@ function LandingPage() {
 
   useEffect(() => {
     getDataEvent();
-  }, [page]);
+  }, [paramsPage, paramsName, paramsDate, paramsSort]);
 
   useEffect(() => {
     generateDate();
-  }, [dateShow]);
-
-  const generateDate = () => {
-    let listDate = [
-      moment(dateShow).subtract(2, "days"),
-      moment(dateShow).subtract(1, "days"),
-      dateShow,
-      moment(dateShow).subtract(-1, "days"),
-      moment(dateShow).subtract(-2, "days"),
-    ];
-    setListDateShow(listDate);
-  };
-
-  const selectDate = (date) => {
-    setDateShow(date);
-  };
+  }, [paramsDate]);
 
   const getDataEvent = async () => {
     try {
       const result = await axios.get(
-        `/event?page=${page}&limit=4&search=${searchEvent}&column=&asc=`
+        `/event?page=${paramsPage}&limit=4&search=${paramsName}&dateTimeShow=${paramsDate}&column=&asc=${paramsSort}`
       );
       setData(result.data.data);
       setPagination(result.data.pagination);
-      console.log(searchEvent);
-      console.log(result);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const useNavigateSearch = (data) => {
+    let query = { ...params, ...data };
+    if (query.page === 1) {
+      delete query.page;
+    }
+    if (query.search === "") {
+      delete query.search;
+    }
+    query = qs.stringify(query);
+    navigate(`/?${query}`);
+  };
+
+  const generateDate = () => {
+    let listDate = [
+      moment(paramsDate).subtract(2, "days"),
+      moment(paramsDate).subtract(1, "days"),
+      paramsDate,
+      moment(paramsDate).subtract(-1, "days"),
+      moment(paramsDate).subtract(-2, "days"),
+    ];
+    setListDateShow(listDate);
+  };
+
+  const selectDate = (date) => {
+    useNavigateSearch({ searchDateTimeShow: date, page: 1 });
+  };
+
   const handlePrevPage = () => {
-    setPage(page - 1);
+    useNavigateSearch({ page: paramsPage - 1 });
   };
 
   const handleNextPage = () => {
-    setPage(page + 1);
+    useNavigateSearch({ page: paramsPage + 1 });
   };
 
   const handleSearch = () => {
-    getDataEvent();
+    useNavigateSearch({
+      search: searchEvent.searchEvent,
+      asc: searchEvent.asc,
+      page: 1,
+    });
+    // console.log(searchEvent);
   };
 
   const handleChangeSearch = (e) => {
-    setSearchEvent(e.target.value);
+    setSearchEvent({ ...searchEvent, [e.target.name]: e.target.value });
   };
 
   const handleNavigateDetailEvent = (idEvent) => {
@@ -106,7 +135,7 @@ function LandingPage() {
         <ScheduleEvent
           handleNextPage={handleNextPage}
           handlePrevPage={handlePrevPage}
-          page={page}
+          page={paramsPage}
           pagination={pagination}
           listDateShow={listDateShow}
           selectDate={selectDate}

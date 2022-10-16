@@ -47,7 +47,7 @@ const events = (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: true,
-        message: action.payload.message,
+        message: action.payload.response.data.message,
       };
     }
     case "UPDATE_EVENT_PENDING": {
@@ -71,7 +71,7 @@ const events = (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: true,
-        message: action.payload.message,
+        message: action.payload.response.data.message,
       };
     }
     case "DELETE_EVENT_PENDING": {
@@ -95,7 +95,7 @@ const events = (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: true,
-        message: action.payload.message,
+        message: action.payload.response.data.message,
       };
     }
     default: {

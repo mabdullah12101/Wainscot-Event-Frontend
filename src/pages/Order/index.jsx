@@ -24,11 +24,11 @@ export default function Order() {
   const [fullSeat, setFullSeat] = useState([]); // DI GUNAKAN UNTUK MENAMPUNG SEAT YANG FULL
   const [activeSeat, setActiveSeat] = useState([]); // DIGUNAKAN UNTUK MENAMPUNG SEAT YANG SEDANG DIPILIH
   const [dataOrder, setDataOrder] = useState([]); // DIGUNAKAN UNTUK MENAMPUNG SEAT YANG SUDAH TERPILIH
-  // eslint-disable-next-line no-unused-vars
   const [listBooking, setListBooking] = useState([]); // DIGUNAKAN UNTUK MENAMPUNG LIST DATA SEAT YANG SUDAH DI BOOKING
   const [dataEvent, setDataEvent] = useState([]); // DIGUNAKAN UNTUK MENAMPUNG DATA EVENT
   const [totalPrice, setTotalPrice] = useState(0);
   const [ticketSection, setTicketSection] = useState([]);
+  const [section, setSection] = useState([]);
 
   useEffect(() => {
     getDataBooking();
@@ -38,6 +38,7 @@ export default function Order() {
   useEffect(() => {
     getTotalPayment();
     getTicketSection();
+    getSection();
   }, [dataOrder]);
 
   const getDataBooking = async () => {
@@ -63,7 +64,6 @@ export default function Order() {
 
   const handleSelectSeat = (seat) => {
     // PROSES PEMILIHAN SEAT
-    // console.log("click");
     const data = seat.split("-");
     if (!fullSeat.includes(seat)) {
       if (activeSeat.includes(seat)) {
@@ -71,7 +71,6 @@ export default function Order() {
         const deleteDataOrder = dataOrder.filter((item) => item.seat !== seat);
         setActiveSeat(deleteSeat);
         setDataOrder(deleteDataOrder);
-        // ticketSection.add(deleteSeat);
       } else {
         setActiveSeat([...activeSeat, seat]);
         setDataOrder([
@@ -86,7 +85,6 @@ export default function Order() {
               : dataEvent[0].price, // HARGA TIDAK BERUBAH UNTUK REGULAR
           },
         ]);
-        // ticketSection.add(seat);
       }
     }
   };
@@ -112,17 +110,17 @@ export default function Order() {
     setTicketSection(fixSection);
   };
 
-  const handleOrderSeat = () => {
-    const section = [];
-    // let totalPrice = 0;
-    // const ticketSection = new Set(activeSeat);
+  const getSection = () => {
+    const tempSection = [];
     dataOrder.map((item) => {
-      section.push(item.seat);
-      // totalPrice = totalPrice + item.price;
-      // console.log(section);
-      // console.log(totalPrice);
+      for (let i = 0; i < item.qty; i++) {
+        tempSection.push(item.seat);
+      }
     });
-    // console.log(ticketSection);
+    setSection(tempSection);
+  };
+
+  const handleOrderSeat = () => {
     navigate("/payment", {
       state: {
         userId: userId,
@@ -139,6 +137,37 @@ export default function Order() {
   const clearOrderSeat = () => {
     setActiveSeat([]);
     setDataOrder([]);
+  };
+
+  const increaseOrderSeat = (section) => {
+    const findData = dataOrder.find((item) => item.seat === section.seat);
+    const price = section.seat.includes("VVIP")
+      ? dataEvent[0].price * 3 // HARGA 3 KALI LIPAT UNTUK VVIP
+      : section.seat.includes("VIP")
+      ? dataEvent[0].price * 2 // HARGA 2 KALI LIPAT UNTUK VIP
+      : dataEvent[0].price; // HARGA TIDAK BERUBAH UNTUK REGULAR
+    findData.qty += 1;
+    findData.price = price * findData.qty;
+    setDataOrder([...dataOrder]);
+  };
+
+  const decreaseOrderSeat = (section) => {
+    const findData = dataOrder.find((item) => item.seat === section.seat);
+    if (findData.qty === 1) {
+      const deleteData = dataOrder.filter((item) => item.seat !== section.seat);
+      const deleteSeat = activeSeat.filter((item) => item !== section.seat);
+      setDataOrder(deleteData);
+      setActiveSeat(deleteSeat);
+    } else {
+      const price = section.seat.includes("VVIP")
+        ? dataEvent[0].price * 3 // HARGA 3 KALI LIPAT UNTUK VVIP
+        : section.seat.includes("VIP")
+        ? dataEvent[0].price * 2 // HARGA 2 KALI LIPAT UNTUK VIP
+        : dataEvent[0].price; // HARGA TIDAK BERUBAH UNTUK REGULAR
+      findData.qty -= 1;
+      findData.price = price * findData.qty;
+      setDataOrder([...dataOrder]);
+    }
   };
 
   return (
@@ -176,6 +205,15 @@ export default function Order() {
                   const dataSeat = listBooking.filter(
                     (itemSeat) => itemSeat.section === item.seat
                   );
+                  const seatAvailable =
+                    dataSeat.length > 0
+                      ? dataSeat[0].available
+                      : data[0].includes("VVIP")
+                      ? 10
+                      : data[0].includes("VIP")
+                      ? 20
+                      : 30;
+
                   return (
                     <>
                       <div className="flex justify-between" key={index}>
@@ -196,14 +234,14 @@ export default function Order() {
                               SECTION {data[0]}, ROW {data[1]}
                             </h5>
                             <span className="text-xs text-[#BDC0C4] font-medium">
-                              {dataSeat.length > 0
+                              {/* {dataSeat.length > 0
                                 ? dataSeat[0].available
                                 : data[0].includes("VVIP")
                                 ? 10
                                 : data[0].includes("VIP")
                                 ? 20
-                                : 30}{" "}
-                              Seats available
+                                : 30}{" "} */}
+                              {`${seatAvailable} Seats available`}
                             </span>
                           </div>
                         </div>
@@ -219,16 +257,23 @@ export default function Order() {
                           Quantity
                         </span>
                         <div className="flex items-center text-main-gray gap-x-8">
-                          <button className="border border-main-gray px-[1px] rounded-md">
+                          <button
+                            className="border border-main-gray px-[1px] rounded-md"
+                            onClick={() => decreaseOrderSeat(item)}
+                          >
                             <i
                               className="iconify text-2xl"
                               data-icon="bx:minus"
                             ></i>
                           </button>
                           <span className="text-xs font-bold text-main-black">
-                            1
+                            {item.qty}
                           </span>
-                          <button className="border border-main-gray px-[1px] rounded-md">
+                          <button
+                            className="border border-main-gray px-[1px] rounded-md disabled:cursor-not-allowed disabled:opacity-50"
+                            onClick={() => increaseOrderSeat(item)}
+                            disabled={seatAvailable === item.qty ? true : false}
+                          >
                             <i
                               className="iconify text-2xl"
                               data-icon="bx:plus"
@@ -259,7 +304,7 @@ export default function Order() {
               <div className="flex justify-between items-center">
                 <span className="text-sm font-bold">Quantity</span>
                 <span className="text-sm font-bold text-main-blue">
-                  {dataOrder.length}
+                  {section.length}
                 </span>
               </div>
               <div className="flex justify-between items-center">
