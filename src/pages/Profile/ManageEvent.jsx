@@ -28,7 +28,6 @@ function ManageEvent() {
   const [form, setForm] = useState({});
   const [toast, setToast] = useState(false);
   const [eventId, setEventId] = useState("");
-  console.log(form);
 
   useEffect(() => {
     dispatch(getAllEvents(paramsPage));
@@ -82,8 +81,6 @@ function ManageEvent() {
   };
 
   const onChangeForm = (e) => {
-    console.log(e.target.name);
-    console.log(e.target.value);
     const { name, value, files } = e.target;
 
     if (name === "image") {

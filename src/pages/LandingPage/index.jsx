@@ -25,15 +25,9 @@ function LandingPage() {
     ? params.searchDateTimeShow
     : moment().format("YYYY-MM-DD");
   const paramsSort = params.asc ? params.asc : true;
-  // console.log(paramsPage);
-  // console.log(paramsName);
-  // console.log(paramsDate);
-  // console.log(paramsSort);
 
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState([]);
-  // const [page, setPage] = useState(1);
-  // const [dateShow, setDateShow] = useState(moment().format("YYYY-MM-DD")); // 2022-10-04
   const [listDateShow, setListDateShow] = useState([]);
   const [searchEvent, setSearchEvent] = useState("");
 
@@ -102,7 +96,6 @@ function LandingPage() {
       asc: searchEvent.asc,
       page: 1,
     });
-    // console.log(searchEvent);
   };
 
   const handleChangeSearch = (e) => {

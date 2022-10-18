@@ -24,8 +24,8 @@ function Hero({ searchEvent, handleSearch, handleChangeSearch }) {
               name="asc"
               onChange={handleChangeSearch}
             >
-              <option value="true">ASC</option>
-              <option value="false">DSC</option>
+              <option value="true">Newest</option>
+              <option value="false">Latest</option>
             </select>
           </div>
           <div className="self-center mr-3 xl:ml-4 text-white text-2xl xl:w-1/12">
