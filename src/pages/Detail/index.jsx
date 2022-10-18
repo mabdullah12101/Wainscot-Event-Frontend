@@ -13,18 +13,12 @@ function Detail() {
   const dataUser = useSelector((state) => state.user.data);
   const userId = dataUser.userId;
   const [data, setData] = useState({});
-  // const [dataUser, setDataUser] = useState({});
-  // const [dataWishlist, setDataWishlist] = useState([]);
   const [checkWishlist, setCheckWishlist] = useState();
   const { eventId } = useParams();
-  // console.log(userId);
-  // console.log(dataUser);
 
   useEffect(() => {
     getEventById();
-    // getUserById();
     getWishlistById();
-    // wishlistSame();
   }, []);
 
   useEffect(() => {
@@ -40,19 +34,9 @@ function Detail() {
     }
   };
 
-  // const getUserById = async () => {
-  //   try {
-  //     const result = await axios.get(`/user/${userId}`);
-  //     setDataUser(result.data.data[0]);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const getWishlistById = async () => {
     try {
       const result = await axios.get(`/wishlist/userId/${userId}`);
-      // setDataWishlist(result.data.data);
       result.data.data.map((item) => {
         if (item.eventId === eventId) {
           setCheckWishlist(item.wishlistId);
@@ -62,14 +46,6 @@ function Detail() {
       console.log(error);
     }
   };
-
-  // const wishlistSame = () => {
-  //   dataWishlist.map((item) => {
-  //     if (item.eventId === eventId) {
-  //       setCheckWishlist(true);
-  //     }
-  //   });
-  // };
 
   const addWishlist = async () => {
     try {

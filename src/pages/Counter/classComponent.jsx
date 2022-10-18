@@ -3,7 +3,6 @@ import React, { Component } from "react";
 class Counter extends Component {
   constructor() {
     super();
-    console.log("CONSTRUCTOR IS RUNNING !");
     this.state = {
       name: "",
       data: [],
@@ -11,7 +10,6 @@ class Counter extends Component {
   }
 
   componentDidMount() {
-    console.log("COMPONENT DID MOUNT IS RUNNING !");
     setTimeout(() => {
       // PROSES PEMANGGILAN DATA DARI DATABASE
       this.setState({
@@ -22,7 +20,6 @@ class Counter extends Component {
   }
 
   render() {
-    console.log("RENDER JSX IS RUNNING !");
     return (
       <div className="container text-center">
         <h1>Counter App</h1>

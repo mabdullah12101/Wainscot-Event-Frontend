@@ -1,16 +1,9 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import { useNavigate } from "react-router-dom";
-// import PropTypes from "prop-types";
 
 function Card(props) {
   const navigate = useNavigate();
-  console.log(props);
-  // props = {
-  //     data: {...},
-  //     newData: "Data Baru Nih"
-  //       handleDetail: function handleDetailProduct(){...}
-  // }
 
   const handleDetail = () => {
     navigate(`/detail/${props.data.id}`);
@@ -35,10 +28,5 @@ function Card(props) {
     </div>
   );
 }
-
-// Card.propTypes = {
-//     data: PropTypes.object,
-//     newData: PropTypes.string,
-// }
 
 export default Card;
