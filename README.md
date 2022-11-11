@@ -1,6 +1,6 @@
 <h1 align='center'>Wainscot Event Website </h1>
   <p align="center">
-    <a href="https://superb-banoffee-f930af.netlify.app//">View Demo</a>
+    <a href="https://superb-banoffee-f930af.netlify.app/">View Demo</a>
     ·
     <a href="https://github.com/mabdullah12101/Wainscot-Event-Frontend/issues">Report Bug</a>
     ·
