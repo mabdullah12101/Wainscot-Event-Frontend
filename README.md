@@ -23,6 +23,10 @@ Website event organizing, to organize your event and booking some event
 - [Tailwind](https://tailwindcss.com/)
 - [React](https://reactjs.org/)
 
+## Note
+Login with email doel@gmail.com with password doel
+Have Problem with deploy backend
+
 ## License
 
 © [Muhammad Abdullah](https://github.com/mabdullah12101)
