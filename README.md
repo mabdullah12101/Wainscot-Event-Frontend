@@ -24,8 +24,8 @@ Website event organizing, to organize your event and booking some event
 - [React](https://reactjs.org/)
 
 ## Note
-Login with email doel@gmail.com with password doel
-Have Problem with deploy backend
+- Login with email doel@gmail.com with password doel
+- Have Problem with deploy backend
 
 ## License
 
