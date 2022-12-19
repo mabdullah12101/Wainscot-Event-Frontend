@@ -8,6 +8,7 @@ import imgPeople from "../../assets/img/img-people.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getDataUserById } from "../../stores/actions/user";
 import { login } from "../../stores/actions/auth";
+import Spinner from "../../components/Spinner";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -178,23 +179,21 @@ export default function SignIn() {
             </a>
             <button
               type="submit"
-              className="py-4 px-4 bg-main-blue text-white font-bold border-none rounded-2xl shadow-md shadow-blue-900 hover:bg-blue-700"
+              className="py-4 px-4 bg-main-blue text-white font-bold border-none rounded-2xl shadow hover:bg-blue-700"
               onClick={handleLogin}
             >
-              Sign In
+              {auth.isLoading ? <Spinner /> : "Sign In"}
             </button>
 
-            <span className="text-center text-sm mt-8 mb-5">
-              or sign in with
-            </span>
-            <div className="flex justify-center">
-              <button className="flex justify-center bg-white border border-main-blue rounded-md py-3 px-9 mr-3 text-2xl">
-                <i className="iconify" data-icon="flat-color-icons:google"></i>
-              </button>
-              <button className="flex justify-center bg-white border border-main-blue rounded-md py-3 px-9 mr-3 text-2xl">
-                <i className="iconify" data-icon="logos:facebook"></i>
-              </button>
-            </div>
+            <span className="text-center text-sm mt-8 mb-5">or sign up</span>
+
+            <button
+              type="button"
+              className="py-4 px-4 border border-main-blue text-black font-bold rounded-2xl shadow hover:bg-gray-100"
+              onClick={() => navigate("/signup")}
+            >
+              Sign Up
+            </button>
           </form>
         </section>
       </main>

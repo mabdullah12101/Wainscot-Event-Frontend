@@ -139,7 +139,7 @@ function MyBooking() {
                 </div>
 
                 <div className="flex items-center">
-                  <p className="w-4/12 font-medium">Total Payment</p>
+                  <p className="w-4/12 font-medium">Section</p>
                   <p className="w-8/12 font-medium text-end text-main-blue">
                     {detailBooking.bookingSection.map(
                       (item) => `${item.section} `
@@ -344,10 +344,10 @@ function MyBooking() {
                     <div className="flex gap-x-9 mb-6">
                       <div className="text-center mt-4">
                         <div className="text-sm text-[#FF8900] font-bold">
-                          {moment(item.event.dateTimeShow).format("DD")}
+                          {moment(item.createdAt).format("DD")}
                         </div>
                         <small className="text-xs text-[#C1C5D0]">
-                          {moment(item.event.dateTimeShow).format("ddd")}
+                          {moment(item.createdAt).format("ddd")}
                         </small>
                       </div>
 
@@ -359,7 +359,7 @@ function MyBooking() {
                         <div className="text-xs tracking-wide text-[#373A42BF] mt-4">
                           <p className="mb-2">{item.event.location}</p>
                           <p className="mb-3">
-                            {moment(item.event.dataTimeShow).format(
+                            {moment(item.event.dateTimeShow).format(
                               "ddd, DD MMM, hh A"
                             )}
                           </p>
@@ -406,7 +406,7 @@ function MyBooking() {
                   No tickets bought
                 </h2>
                 <p className="text-sm text-[#B3B8B8] font-medium max-w-xs tracking-wide mt-4">
-                  It appears you haven’t bought any tickets yet. Maybe try
+                  It appears you haven`t bought any tickets yet. Maybe try
                   searching these?
                 </p>
               </div>

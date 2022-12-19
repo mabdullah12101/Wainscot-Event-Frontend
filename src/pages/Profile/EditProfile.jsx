@@ -52,6 +52,7 @@ function EditProfile() {
 
   const handleInputImage = (e) => {
     const { name, files } = e.target;
+    console.log(files);
     setNewImage({ [name]: files[0] });
     setImagePreview(URL.createObjectURL(files[0]));
   };
