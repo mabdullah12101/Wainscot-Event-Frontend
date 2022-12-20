@@ -5,7 +5,11 @@ export default function Spinner({ variant }) {
     <div role="status">
       <svg
         className={`inline mr-2 ${
-          variant === "Medium" ? "w-20 h-20" : "w-6 h-6"
+          variant === "Small"
+            ? "w-10 h-10"
+            : variant === "Medium"
+            ? "w-20 h-20"
+            : "w-6 h-6"
         } text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300`}
         viewBox="0 0 100 101"
         fill="none"
