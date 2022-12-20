@@ -2,7 +2,7 @@
 <h3 align="center">Wainscot Event</h3>
 
   <p align="center">
-    <a href="https://superb-banoffee-f930af.netlify.app/">View Demo</a>
+    <a href="https://wainscot-event-frontend.vercel.app/">View Demo</a>
     ·
     <a href="https://github.com/mabdullah12101/Wainscot-Event-Frontend/issues">Report Bug</a>
     ·
