@@ -7,11 +7,13 @@ import { Eye } from "react-feather";
 import { EyeOff } from "react-feather";
 import logo from "../../assets/img/logo.png";
 import imgPeople from "../../assets/img/img-people.png";
+import Spinner from "../../components/Spinner";
 
 export default function SignIn() {
   const navigate = useNavigate();
   const [toast, setToast] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -24,14 +26,17 @@ export default function SignIn() {
 
   const handleRegister = async (e) => {
     try {
+      setLoading(true);
       e.preventDefault();
       const result = await axios.post(
-        "http://localhost:3001/api/auth/register",
+        "https://wainscot-event-organizer-backend.vercel.app/api/auth/register",
         form
       );
+      setLoading(false);
       setMessage(result.data.message);
       setToast("success");
     } catch (error) {
+      setLoading(false);
       setMessage(error.response.data.message);
       setToast("failed");
     }
@@ -187,12 +192,12 @@ export default function SignIn() {
               onChange={handleChangeForm}
             />
             <div className="relative">
-              <button
+              <div
                 onClick={handleShowPassword}
-                className="absolute right-0 mt-4 mr-4 text-[#3366ff]"
+                className="absolute right-0 mt-4 mr-4 text-[#3366ff] cursor-pointer"
               >
                 {showPassword ? <EyeOff /> : <Eye />}
-              </button>
+              </div>
               <input
                 className="focus:outline-blue-50 focus:ring-4 mb-5 px-6 py-4 border border-main-gray rounded-2xl placeholder:text-gray-400 w-full"
                 type={showPassword ? "text" : "password"}
@@ -202,12 +207,12 @@ export default function SignIn() {
               />
             </div>
             <div className="relative">
-              <button
+              <div
                 onClick={handleShowPassword}
-                className="absolute right-0 mt-4 mr-4 text-[#3366ff]"
+                className="absolute right-0 mt-4 mr-4 text-[#3366ff] cursor-pointer"
               >
                 {showPassword ? <EyeOff /> : <Eye />}
-              </button>
+              </div>
               <input
                 className="focus:outline-blue-50 focus:ring-4 mb-5 px-6 py-4 border border-main-gray rounded-2xl placeholder:text-gray-400 w-full"
                 type={showPassword ? "text" : "password"}
@@ -217,19 +222,12 @@ export default function SignIn() {
               />
             </div>
 
-            <div className="flex items-center mb-5">
-              <input type="checkbox" id="checkbox" />
-              <label htmlFor="checkbox" className="ml-3">
-                Accept terms and condition
-              </label>
-            </div>
-
             <button
               type="submit"
-              className="py-4 px-4 bg-main-blue text-white font-bold border-none rounded-2xl shadow-md shadow-blue-900 hover:bg-blue-700"
+              className="mt-4 py-4 px-4 bg-main-blue text-white font-bold border-none rounded-2xl shadow-md shadow-blue-900 hover:bg-blue-700"
               onClick={handleRegister}
             >
-              Sign Up
+              {loading ? <Spinner /> : "Sign Up"}
             </button>
           </form>
         </section>

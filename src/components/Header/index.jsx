@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import axios from "../../utils/axios";
+import Spinner from "../Spinner";
 
 function Header() {
   const navigate = useNavigate();
@@ -70,43 +71,47 @@ function Header() {
 
           {isLogin ? (
             <div className="relative">
-              <button
-                className="hidden xl:flex items-center gap-x-5"
-                onClick={() => {
-                  dropdownProfile
-                    ? setDropdownProfile(false)
-                    : setDropdownProfile(true);
-                }}
-              >
-                <div
-                  className={`w-11 h-11 rounded-full outline outline-offset-2 outline-[3px] outline-main-blue overflow-hidden`}
+              {user.isLoading ? (
+                <Spinner />
+              ) : (
+                <button
+                  className="hidden xl:flex items-center gap-x-5"
+                  onClick={() => {
+                    dropdownProfile
+                      ? setDropdownProfile(false)
+                      : setDropdownProfile(true);
+                  }}
                 >
-                  <img
-                    src={
-                      user.data.image
-                        ? process.env.REACT_APP_CLOUDINARY_URL_IMAGE +
-                          user.data.image
-                        : process.env.REACT_APP_CLOUDINARY_DEFAULT_IMAGE
-                    }
-                    alt=""
-                    className="w-full rounded-full"
-                  />
-                </div>
+                  <div
+                    className={`w-11 h-11 rounded-full outline outline-offset-2 outline-[3px] outline-main-blue overflow-hidden`}
+                  >
+                    <img
+                      src={
+                        user.data.image
+                          ? process.env.REACT_APP_CLOUDINARY_URL_IMAGE +
+                            user.data.image
+                          : process.env.REACT_APP_CLOUDINARY_DEFAULT_IMAGE
+                      }
+                      alt=""
+                      className="w-full rounded-full"
+                    />
+                  </div>
 
-                <span className="font-bold tracking-wider text-sm">
-                  {user.data.name ? user.data.name : "Anonymous"}
-                </span>
-                <span
-                  className="iconify text-xl"
-                  data-icon="ep:arrow-down-bold"
-                ></span>
-              </button>
+                  <span className="font-bold tracking-wider text-sm">
+                    {user.data.name ? user.data.name : "Anonymous"}
+                  </span>
+                  <span
+                    className="iconify text-xl"
+                    data-icon="ep:arrow-down-bold"
+                  ></span>
+                </button>
+              )}
 
               <div
                 id="dropdown"
                 className={`${
                   dropdownProfile ? "" : "hidden"
-                } z-10 w-1/2 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 absolute right-0`}
+                } z-10 w-40 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 absolute right-0 mt-3`}
               >
                 <ul
                   className="py-1 text-sm text-gray-700 dark:text-gray-200"

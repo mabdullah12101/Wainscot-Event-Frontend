@@ -14,6 +14,7 @@ import axios from "../../utils/axios";
 import moment from "moment";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import qs from "query-string";
+import Spinner from "../../components/Spinner";
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ function LandingPage() {
   const [pagination, setPagination] = useState([]);
   const [listDateShow, setListDateShow] = useState([]);
   const [searchEvent, setSearchEvent] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getDataEvent();
@@ -45,12 +47,15 @@ function LandingPage() {
 
   const getDataEvent = async () => {
     try {
+      setLoading(true);
       const result = await axios.get(
         `/event?page=${paramsPage}&limit=4&search=${paramsName}&dateTimeShow=${paramsDate}&column=&asc=${paramsSort}`
       );
+      setLoading(false);
       setData(result.data.data);
       setPagination(result.data.pagination);
     } catch (error) {
+      setLoading(false);
       console.error(error);
     }
   };
@@ -134,26 +139,30 @@ function LandingPage() {
           selectDate={selectDate}
         />
 
-        <div className="flex gap-x-8 xl:self-auto self-start pl-8 xl:pl-0">
-          {data.length > 0 ? (
-            data.map((item) => (
-              <CardEvent
-                key={item.eventId}
-                bgCardEvent={item.image}
-                titleCardEvent={item.name}
-                dateCardEvent={moment(item.dateTimeShow).format(
-                  "ddd, DD MMM, hh A"
-                )}
-                handleNavigateDetailEvent={handleNavigateDetailEvent}
-                idEvent={item.eventId}
-              />
-            ))
-          ) : (
-            <div className="text-center">
-              <h3>Data Not Found !</h3>
-            </div>
-          )}
-        </div>
+        {loading ? (
+          <Spinner variant={"Medium"} />
+        ) : (
+          <div className="flex gap-x-8 xl:self-auto self-start pl-8 xl:pl-0">
+            {data.length > 0 ? (
+              data.map((item) => (
+                <CardEvent
+                  key={item.eventId}
+                  bgCardEvent={item.image}
+                  titleCardEvent={item.name}
+                  dateCardEvent={moment(item.dateTimeShow).format(
+                    "ddd, DD MMM, hh A"
+                  )}
+                  handleNavigateDetailEvent={handleNavigateDetailEvent}
+                  idEvent={item.eventId}
+                />
+              ))
+            ) : (
+              <div className="text-center">
+                <h3>Data Not Found !</h3>
+              </div>
+            )}
+          </div>
+        )}
 
         <ButtonSeeAll borderColor={"border-main-blue"} />
       </section>
