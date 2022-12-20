@@ -436,9 +436,7 @@ function MyWishlist() {
         </section>
 
         <section
-          className={`relative xl:basis-9/12 bg-white rounded-3xl pt-11 pb-14 xl:px-12 xl:block flex flex-col ${
-            wishlists.data.length > 0 ? "xl:h-[880px]" : "xl:h-[560px]"
-          }`}
+          className={`xl:basis-9/12 bg-white rounded-3xl pt-11 pb-14 xl:px-12 xl:block flex flex-col`}
         >
           <h2 className="font-bold text-xl tracking-wider">My Wishlist</h2>
 
@@ -467,7 +465,7 @@ function MyWishlist() {
               </div>
             </div>
           ) : wishlists.data.length > 0 ? (
-            <div className="mt-14 flex flex-col gap-y-5">
+            <div className="mt-14 mb-10 flex flex-col gap-y-5 relative">
               {wishlists.data.map((item) => (
                 <div
                   className="flex gap-x-9 border-b pb-4"
@@ -507,7 +505,7 @@ function MyWishlist() {
                   </button>
                 </div>
               ))}
-              <div className="absolute bottom-5 flex justify-center w-full">
+              <div className="absolute bottom-[-60px] flex justify-center w-full">
                 <div className="flex gap-x-5">
                   <button
                     className={`text-2xl bg-main-blue text-white rounded-lg px-5 py-2 disabled:cursor-not-allowed disabled:opacity-50`}

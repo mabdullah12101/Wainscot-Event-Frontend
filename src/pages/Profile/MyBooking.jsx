@@ -132,6 +132,13 @@ function MyBooking() {
                 </div>
 
                 <div className="flex items-center">
+                  <p className="w-4/12 font-medium">Total Payment</p>
+                  <p className="w-8/12 font-medium text-end text-main-blue">
+                    {detailBooking.paymentMethod}
+                  </p>
+                </div>
+
+                <div className="flex items-center">
                   <p className="w-4/12 font-medium">Status Payment</p>
                   <p className="w-8/12 font-medium text-end text-main-blue">
                     {detailBooking.statusPayment}
@@ -301,9 +308,7 @@ function MyBooking() {
         </section>
 
         <section
-          className={`xl:basis-9/12 bg-white rounded-3xl pt-11 xl:px-12 xl:block flex flex-col relative ${
-            bookings.data.length > 0 ? "xl:h-[880px]" : "xl:h-[560px]"
-          }`}
+          className={`xl:basis-9/12 bg-white rounded-3xl pt-11 xl:px-12 xl:block flex flex-col`}
         >
           <div className="flex items-center justify-between">
             <h2 className="font-bold text-xl tracking-wider">My Booking</h2>
@@ -338,7 +343,7 @@ function MyBooking() {
             </div>
           ) : bookings.data.length > 0 ? (
             <>
-              <div className="mt-14 flex flex-col gap-y-7">
+              <div className="mt-14 mb-20 flex flex-col gap-y-7 relative">
                 {bookings.data.map((item) => (
                   <div key={item.bookingId}>
                     <div className="flex gap-x-9 mb-6">
@@ -375,27 +380,27 @@ function MyBooking() {
                     <hr />
                   </div>
                 ))}
-              </div>
-              <div className="absolute bottom-5 flex justify-center w-full">
-                <div className="flex gap-x-5">
-                  <button
-                    className={`text-2xl bg-main-blue text-white rounded-lg px-5 py-2 disabled:cursor-not-allowed disabled:opacity-50`}
-                    disabled={paramsPage === 1 ? true : false}
-                    onClick={handlePrevPage}
-                  >
-                    <Icon icon={"akar-icons:arrow-left"} />
-                  </button>
-                  <button
-                    className={`text-2xl bg-main-blue text-white rounded-lg px-5 py-2 disabled:cursor-not-allowed disabled:opacity-50`}
-                    disabled={
-                      paramsPage === bookings.pagination.totalPage
-                        ? true
-                        : false
-                    }
-                    onClick={handleNextPage}
-                  >
-                    <Icon icon={"akar-icons:arrow-right"} />
-                  </button>
+                <div className="absolute bottom-[-60px] flex justify-center w-full">
+                  <div className="flex gap-x-5">
+                    <button
+                      className={`text-2xl bg-main-blue text-white rounded-lg px-5 py-2 disabled:cursor-not-allowed disabled:opacity-50`}
+                      disabled={paramsPage === 1 ? true : false}
+                      onClick={handlePrevPage}
+                    >
+                      <Icon icon={"akar-icons:arrow-left"} />
+                    </button>
+                    <button
+                      className={`text-2xl bg-main-blue text-white rounded-lg px-5 py-2 disabled:cursor-not-allowed disabled:opacity-50`}
+                      disabled={
+                        paramsPage === bookings.pagination.totalPage
+                          ? true
+                          : false
+                      }
+                      onClick={handleNextPage}
+                    >
+                      <Icon icon={"akar-icons:arrow-right"} />
+                    </button>
+                  </div>
                 </div>
               </div>
             </>

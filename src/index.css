@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply text-main-black overflow-x-hidden xl:overflow-auto sm:hidden xl:block font-poppins;
+  @apply text-main-black overflow-x-hidden xl:overflow-auto xl:block font-poppins;
 }
 
 .bg-grey {
