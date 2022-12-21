@@ -11,6 +11,7 @@ function Header() {
   const isLogin = localStorage.getItem("token");
   const role = user.data.role;
   const [dropdownProfile, setDropdownProfile] = useState(false);
+  const [hamburger, setHamburger] = useState(false);
 
   const handleNavigateBrand = () => {
     navigate("/");
@@ -72,7 +73,9 @@ function Header() {
           {isLogin ? (
             <div className="relative">
               {user.isLoading ? (
-                <Spinner />
+                <div className="hidden xl:block">
+                  <Spinner />
+                </div>
               ) : (
                 <button
                   className="hidden xl:flex items-center gap-x-5"
@@ -111,15 +114,15 @@ function Header() {
                 id="dropdown"
                 className={`${
                   dropdownProfile ? "" : "hidden"
-                } z-10 w-40 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 absolute right-0 mt-3`}
+                } z-10 w-40 rounded divide-y divide-gray-100 shadow bg-gray-700 absolute right-0 mt-3`}
               >
                 <ul
-                  className="py-1 text-sm text-gray-700 dark:text-gray-200"
+                  className="py-1 text-sm  text-gray-200"
                   aria-labelledby="dropdownDefault"
                 >
                   <li>
                     <a
-                      className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+                      className="block py-2 px-4 hover:bg-gray-600 hover:text-white cursor-pointer"
                       onClick={() => navigate("/edit-profile")}
                     >
                       My Profile
@@ -127,7 +130,7 @@ function Header() {
                   </li>
                   <li>
                     <a
-                      className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+                      className="block py-2 px-4 hover:bg-gray-600 hover:text-white cursor-pointer"
                       onClick={() => navigate("/my-booking")}
                     >
                       My Booking
@@ -135,7 +138,7 @@ function Header() {
                   </li>
                   <li>
                     <a
-                      className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+                      className="block py-2 px-4 hover:bg-gray-600 hover:text-white cursor-pointer"
                       onClick={() => navigate("/my-wishlist")}
                     >
                       My Wishlist
@@ -143,7 +146,7 @@ function Header() {
                   </li>
                   <li>
                     <a
-                      className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+                      className="block py-2 px-4 hover:bg-gray-600 hover:text-white cursor-pointer"
                       onClick={handleLogout}
                     >
                       Sign out
@@ -171,11 +174,67 @@ function Header() {
 
           {/*  HAMBURGER MENU */}
           <div className="text-2xl sm:hidden">
-            <button>
+            <button onClick={() => setHamburger(!hamburger)}>
               <i className="iconify" data-icon="bytesize:menu"></i>
             </button>
           </div>
         </nav>
+
+        <div className={`${hamburger ? "block" : "hidden"}`}>
+          {isLogin ? (
+            <div className="py-4">
+              <ul className="py-1 text-sm text-main-black">
+                <li>
+                  <a
+                    className="block py-2 px-4 hover:bg-gray-600 hover:text-white cursor-pointer"
+                    onClick={() => navigate("/edit-profile")}
+                  >
+                    My Profile
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="block py-2 px-4 hover:bg-gray-600 hover:text-white cursor-pointer"
+                    onClick={() => navigate("/my-booking")}
+                  >
+                    My Booking
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="block py-2 px-4 hover:bg-gray-600 hover:text-white cursor-pointer"
+                    onClick={() => navigate("/my-wishlist")}
+                  >
+                    My Wishlist
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="block py-2 px-4 hover:bg-gray-600 hover:text-white cursor-pointer"
+                    onClick={handleLogout}
+                  >
+                    Sign out
+                  </a>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <div className="flex justify-center text-xs py-10">
+              <button
+                className="w-40 font-bold border border-main-blue tracking-widest py-3 mr-5 rounded-xl"
+                onClick={() => handleNavigateAuthentication("signin")}
+              >
+                Log In
+              </button>
+              <button
+                className="w-40 bg-main-blue text-white font-bold tracking-widest py-3 rounded-xl"
+                onClick={() => handleNavigateAuthentication("signup")}
+              >
+                Sign Up
+              </button>
+            </div>
+          )}
+        </div>
       </header>
     </>
   );
