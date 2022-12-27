@@ -18,6 +18,7 @@ import NotFound from "./pages/NotFound";
 
 import PublicRoute from "./utils/routes/publicRoute";
 import PrivateRoute from "./utils/routes/privateRoute";
+import UpdateDate from "./pages/UpdateDate";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
         {/* PUBLIC ROUTE */}
         {/* <Route path="/counter" element={<Counter />} /> */}
         <Route path="/" element={<LandingPage />} />
+        <Route path="/update-date" element={<UpdateDate />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

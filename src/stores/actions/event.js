@@ -1,9 +1,9 @@
 import axios from "../../utils/axios";
 
-export const getAllEvents = (page) => {
+export const getAllEvents = (page, limit = 4) => {
   return {
     type: "GET_ALL_EVENTS",
-    payload: axios.get(`/event?page=${page}`),
+    payload: axios.get(`/event?page=${page}&limit=${limit}`),
   };
 };
 
@@ -23,7 +23,7 @@ export const updateEvent = (data, eventId) => {
 
 export const deleteEvent = (eventId) => {
   return {
-    type: "UPDATE_EVENT",
+    type: "DELETE_EVENT",
     payload: axios.delete(`/event/${eventId}`),
   };
 };
