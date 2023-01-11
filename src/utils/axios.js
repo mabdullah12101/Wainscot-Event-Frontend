@@ -2,6 +2,7 @@ import axios from "axios";
 
 const axiosAPIInstances = axios.create({
   baseURL: "https://wainscot-event-organizer-backend.vercel.app/api",
+  // baseURL: "http://localhost:3001/api",
 });
 
 // Add a request interceptor

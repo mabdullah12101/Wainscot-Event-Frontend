@@ -1,4 +1,5 @@
 const initialState = {
+  allData: {},
   data: {},
   isLoading: false,
   isError: false,
@@ -8,6 +9,29 @@ const initialState = {
 
 const events = (state = initialState, action) => {
   switch (action.type) {
+    case "GET_ALL_PENDING": {
+      return {
+        ...state,
+        allData: {},
+        isLoading: true,
+        isError: false,
+        message: "",
+      };
+    }
+    case "GET_ALL_FULFILLED": {
+      return {
+        ...state,
+        allData: action.payload.data.data,
+        isLoading: false,
+      };
+    }
+    case "GET_ALL_REJECTED": {
+      return {
+        ...state,
+        allData: {},
+        isLoading: false,
+      };
+    }
     case "GET_ALL_EVENTS_PENDING": {
       return {
         ...state,

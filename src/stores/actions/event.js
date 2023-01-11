@@ -1,5 +1,12 @@
 import axios from "../../utils/axios";
 
+export const getAll = () => {
+  return {
+    type: "GET_ALL",
+    payload: axios.get("/event/getall"),
+  };
+};
+
 export const getAllEvents = (page, limit = 4) => {
   return {
     type: "GET_ALL_EVENTS",

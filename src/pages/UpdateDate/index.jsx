@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getAllEvents, updateEvent } from "../../stores/actions/event";
+import { getAll, updateEvent } from "../../stores/actions/event";
 import moment from "moment";
 
 export default function UpdateDate() {
@@ -10,7 +10,7 @@ export default function UpdateDate() {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    getAll();
+    getAllEvent();
   }, []);
 
   useEffect(() => {
@@ -24,8 +24,8 @@ export default function UpdateDate() {
     }
   }, [events]);
 
-  const getAll = async () => {
-    dispatch(getAllEvents(1, 100)).then((res) => {
+  const getAllEvent = async () => {
+    dispatch(getAll()).then((res) => {
       setEvents(res.action.payload.data.data);
     });
   };

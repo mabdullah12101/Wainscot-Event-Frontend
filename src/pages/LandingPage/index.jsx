@@ -4,7 +4,6 @@ import Hero from "../../components/Hero";
 import HeaderSection from "../../components/LandingPage/HeaderSection";
 import ScheduleEvent from "../../components/LandingPage/ScheduleEvent";
 import CardEvent from "../../components/LandingPage/CardEvent";
-import ButtonSeeAll from "../../components/LandingPage/ButtonSeeAll";
 import DiscoverSection from "../../components/LandingPage/DiscoverSection";
 import ListCategory from "../../components/LandingPage/ListCategory";
 import ListEventCategory from "../../components/LandingPage/ListEventCategory";
@@ -54,6 +53,7 @@ function LandingPage() {
       setLoading(false);
       setData(result.data.data);
       setPagination(result.data.pagination);
+      console.log(result);
     } catch (error) {
       setLoading(false);
       console.error(error);
@@ -111,6 +111,8 @@ function LandingPage() {
     navigate(`/detail/${idEvent}`);
   };
 
+  console.log(pagination);
+
   return (
     <>
       <section className="h-screen bg-main-blue bg-hero bg-no-repeat bg-cover bg-center">
@@ -140,31 +142,29 @@ function LandingPage() {
         />
 
         {loading ? (
-          <Spinner variant={"Medium"} />
-        ) : (
+          <div className="flex items-center justify-center h-80">
+            <Spinner variant={"Medium"} />
+          </div>
+        ) : data.length > 0 ? (
           <div className="flex gap-x-8 xl:self-auto self-start pl-8 xl:pl-0">
-            {data.length > 0 ? (
-              data.map((item) => (
-                <CardEvent
-                  key={item.eventId}
-                  bgCardEvent={item.image}
-                  titleCardEvent={item.name}
-                  dateCardEvent={moment(item.dateTimeShow).format(
-                    "ddd, DD MMM, hh A"
-                  )}
-                  handleNavigateDetailEvent={handleNavigateDetailEvent}
-                  idEvent={item.eventId}
-                />
-              ))
-            ) : (
-              <div className="text-center">
-                <h3>Data Not Found !</h3>
-              </div>
-            )}
+            {data.map((item) => (
+              <CardEvent
+                key={item.eventId}
+                bgCardEvent={item.image}
+                titleCardEvent={item.name}
+                dateCardEvent={moment(item.dateTimeShow).format(
+                  "ddd, DD MMM, hh A"
+                )}
+                handleNavigateDetailEvent={handleNavigateDetailEvent}
+                idEvent={item.eventId}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center h-80">
+            <h3>Data Not Found !</h3>
           </div>
         )}
-
-        <ButtonSeeAll borderColor={"border-main-blue"} />
       </section>
 
       <DiscoverSection />

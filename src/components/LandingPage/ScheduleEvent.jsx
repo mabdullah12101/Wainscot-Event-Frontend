@@ -14,7 +14,7 @@ function ScheduleEvent({
         <button
           className={`text-3xl h-fit p-2 rounded-lg shadow-md shadow-[rgba(26, 60, 68, 0.08)] hidden xl:block ${
             page === 1 ? "text-main-gray" : "bg-main-blue text-white"
-          }`}
+          } disabled:cursor-not-allowed`}
           onClick={handlePrevPage}
           disabled={page === 1 ? true : false}
         >
@@ -40,12 +40,12 @@ function ScheduleEvent({
         </div>
         <button
           className={` text-3xl h-fit p-2 rounded-lg shadow-md shadow-[rgba(26, 60, 68, 0.08)] hidden xl:block ${
-            page === pagination.totalPage
+            page >= pagination.totalPage
               ? "text-main-gray"
               : "bg-main-blue text-white"
-          }`}
+          } disabled:cursor-not-allowed`}
           onClick={handleNextPage}
-          disabled={page === pagination.totalPage ? true : false}
+          disabled={page >= pagination.totalPage ? true : false}
         >
           <i className="iconify" data-icon="akar-icons:arrow-right"></i>
         </button>
@@ -54,7 +54,7 @@ function ScheduleEvent({
         <button
           className={` text-3xl h-fit p-2 rounded-lg shadow-md shadow-[rgba(26, 60, 68, 0.08)] ${
             page === 1 ? "text-main-gray" : "bg-main-blue text-white"
-          }`}
+          } disabled:cursor-not-allowed`}
           onClick={handlePrevPage}
           disabled={page === 1 ? true : false}
         >
@@ -62,12 +62,12 @@ function ScheduleEvent({
         </button>
         <button
           className={` text-3xl h-fit p-2 rounded-lg shadow-md shadow-[rgba(26, 60, 68, 0.08)] ${
-            page === pagination.totalPage
+            page >= pagination.totalPage
               ? "text-main-gray"
               : "bg-main-blue text-white"
-          }`}
+          } disabled:cursor-not-allowed`}
           onClick={handleNextPage}
-          disabled={page === pagination.totalPage ? true : false}
+          disabled={page >= pagination.totalPage ? true : false}
         >
           <i className="iconify" data-icon="akar-icons:arrow-right"></i>
         </button>
