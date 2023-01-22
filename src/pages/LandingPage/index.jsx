@@ -146,7 +146,7 @@ function LandingPage() {
             <Spinner variant={"Medium"} />
           </div>
         ) : data.length > 0 ? (
-          <div className="flex gap-x-8 xl:self-auto self-start pl-8 xl:pl-0">
+          <div className="flex gap-x-8 xl:self-auto self-start pl-8 xl:pl-0 overflow-x-scroll xl:overflow-hidden w-full xl:w-auto pb-4">
             {data.map((item) => (
               <CardEvent
                 key={item.eventId}

@@ -9,7 +9,7 @@ function CardEvent({
 }) {
   return (
     <button
-      className={`w-72 h-96 rounded-[40px] flex flex-col justify-end text-white px-7 pb-7 relative overflow-hidden`}
+      className={`w-72 h-96 rounded-[40px] flex-none flex flex-col justify-end text-white px-7 pb-7 relative overflow-hidden`}
       key={key}
       onClick={() => handleNavigateDetailEvent(idEvent)}
     >

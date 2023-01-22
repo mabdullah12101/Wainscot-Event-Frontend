@@ -20,7 +20,7 @@ function ScheduleEvent({
         >
           <i className="iconify" data-icon="akar-icons:arrow-left"></i>
         </button>
-        <div className="flex text-main-gray font-bold text-sm mx-16 xl:gap-x-20 gap-x-14 items-center">
+        <div className="flex text-main-gray font-bold text-sm xl:mx-16 gap-x-8 xl:gap-x-20 items-center">
           {listDateShow.map((item, index) => (
             <button
               className={`flex flex-col items-center ${

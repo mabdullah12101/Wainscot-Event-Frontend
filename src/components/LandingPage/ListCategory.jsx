@@ -1,6 +1,6 @@
 function ListCategory() {
   return (
-    <ul className="flex xl:self-auto self-start xl:pl-0 pl-8 gap-x-24 text-main-gray font-bold tracking-wider">
+    <ul className="flex overflow-x-scroll xl:overflow-hidden w-full xl:w-auto pb-5 xl:self-auto self-start xl:pl-0 pl-8 gap-x-24 text-main-gray font-bold tracking-wider ">
       <li>
         <a href="" className="text-main-blue">
           Music

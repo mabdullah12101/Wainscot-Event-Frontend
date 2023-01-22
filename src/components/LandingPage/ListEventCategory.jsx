@@ -1,7 +1,7 @@
 function ListEventCategory() {
   return (
     <>
-      <div className="flex items-center gap-x-20 xl:self-auto self-start pl-8 xl:pl-0">
+      <div className="flex w-full xl:w-auto overflow-x-scroll xl:overflow-hidden pb-4 items-center gap-x-20 xl:self-auto self-start pl-8 xl:pl-0">
         <button className="text-main-gray text-3xl h-fit p-2 rounded-lg shadow-md shadow-[rgba(26, 60, 68, 0.08)] hidden xl:block">
           <i className="iconify" data-icon="akar-icons:arrow-left"></i>
         </button>
